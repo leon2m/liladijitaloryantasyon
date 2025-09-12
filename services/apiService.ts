@@ -11,7 +11,8 @@ import {
   ApiError,
   OrientationStep,
   OrientationData,
-  TestProgress
+  TestProgress,
+  ResultProfile
 } from '../types';
 
 // --- Local Storage Database Simulation ---
@@ -41,6 +42,16 @@ const generateSecureString = (length = 32) => {
     const array = new Uint8Array(length);
     crypto.getRandomValues(array);
     return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+};
+
+// --- Test Data Seeding ---
+const seedTestsToLocalStorage = async () => {
+    if (!DB.getItem('tests')) {
+        console.log("Seeding tests to local storage...");
+        const response = await fetch('data/tests.json');
+        const tests: Test[] = await response.json();
+        DB.setItem('tests', tests);
+    }
 };
 
 // --- Mock Backend Logic ---
@@ -132,7 +143,7 @@ Bu eşsiz karışım, durumlara hem ${primaryTrait.name}'nin enerjisiyle hem de 
 
 Öğrenmenizi en üst düzeye çıkarmak için, aktif olarak bu stile hitap eden materyalleri ve yöntemleri arayın. Örneğin, bir Görsel öğrenen zihin haritaları kullanabilir, bir İşitsel öğrenen dersleri kaydedebilir ve bir Kinestetik öğrenen modeller inşa edebilir. Baskın bir stiliniz olsa da, diğer stillerden unsurları birleştirmek daha dengeli ve sağlam bir öğrenme deneyimi yaratabilir. Sizin için neyin işe yaradığını keşfetmeye devam edin ve tam öğrenme potansiyelinizi ortaya çıkaracaksınız.`;
     default:
-      return "Sonuçlarınızın bir yorumu hazırlanıyor. Bu profil, kişisel güçlü yönleriniz ve tercihleriniz hakkında değerli bilgiler sağlar. Bu bilgileri, etkileşimlerinizi ve görevlere yaklaşımınızı daha iyi anlamak için kullanın.";
+      return `**${result.testName}** testini tamamladınız. Sonuçlarınız, **${primaryTrait.name}** özelliğine güçlü bir eğilim gösterdiğinizi ortaya koyuyor. Bu, genellikle [özellikle ilgili genel bir açıklama] olduğunuzu gösterir. İkincil olarak, **${secondaryTrait.name}** özelliğiniz de dikkat çekicidir. Bu iki özelliğin birleşimi, [iki özelliğin nasıl etkileşime girdiğine dair kısa bir yorum] olduğunuzu gösterir. Bu bilgileri profesyonel ve kişisel gelişiminiz için bir başlangıç noktası olarak kullanabilirsiniz.`;
   }
 };
 
@@ -140,12 +151,13 @@ Bu eşsiz karışım, durumlara hem ${primaryTrait.name}'nin enerjisiyle hem de 
 // --- API Service ---
 
 const TOKEN_KEY = 'device_token';
-
+const ADMIN_TOKEN_KEY = 'admin_token';
 const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 // Simulates /api/bootstrap
 const bootstrap = async (payload: BootstrapPayload): Promise<BootstrapResponse> => {
   await delay(500);
+  await seedTestsToLocalStorage(); // Ensure tests are in localStorage
   const userId = generateId();
   const deviceId = generateId();
   const device_token = `dt_${generateSecureString()}`;
@@ -183,15 +195,17 @@ const getMe = async (): Promise<User> => {
     return user;
 };
 
-// Simulates GET /api/tests
+// Simulates GET /api/tests - now reads from localStorage
 const getTests = async (): Promise<Test[]> => {
     await delay(500);
-    if (!DB.getItem<string>(TOKEN_KEY)) throw new ApiError("Authentication required");
-
-    const response = await fetch('data/tests.json');
-    if (!response.ok) throw new ApiError(`HTTP error! status: ${response.status}`);
-    return await response.json();
+    await seedTestsToLocalStorage();
+    if (!DB.getItem<string>(TOKEN_KEY) && !DB.getItem<string>(ADMIN_TOKEN_KEY)) {
+      throw new ApiError("Authentication required");
+    }
+    const tests = DB.getItem<Test[]>('tests');
+    return tests || [];
 };
+
 
 // Simulates POST /api/tests/:test_key/submit
 const submitTest = async (testId: TestId, answers: UserAnswers): Promise<TestResult> => {
@@ -306,6 +320,96 @@ const clearTestProgress = (testId: TestId) => {
     DB.removeItem(`test_progress_${testId}`);
 };
 
+// --- ADMIN PANEL API ---
+const adminLogin = async (username: string, password: string): Promise<boolean> => {
+    await delay(500);
+    if (username === 'admin' && password === 'password') {
+        DB.setItem(ADMIN_TOKEN_KEY, `at_${generateSecureString()}`);
+        return true;
+    }
+    throw new ApiError("Invalid admin credentials");
+};
+
+const checkAdminAuth = async (): Promise<boolean> => {
+    await delay(100);
+    return !!DB.getItem<string>(ADMIN_TOKEN_KEY);
+};
+
+const adminLogout = () => {
+    DB.removeItem(ADMIN_TOKEN_KEY);
+};
+
+const getDashboardStats = async () => {
+    await delay(400);
+    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
+    const users = DB.getItem<User[]>('users') || [];
+    const results = DB.getItem<{ userId: string; result: TestResult }[]>('results') || [];
+    const testDistribution = results.reduce((acc, { result }) => {
+        acc[result.testName] = (acc[result.testName] || 0) + 1;
+        return acc;
+    }, {} as Record<string, number>);
+
+    return {
+        totalUsers: users.length,
+        totalTests: results.length,
+        distribution: Object.entries(testDistribution).map(([name, value]) => ({ name, value })),
+    };
+};
+
+const getAllUsersWithResults = async (): Promise<(User & { resultCount: number })[]> => {
+    await delay(500);
+    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
+    const users = DB.getItem<User[]>('users') || [];
+    const allResults = DB.getItem<{ userId: string; result: TestResult }[]>('results') || [];
+    return users.map(user => ({
+        ...user,
+        resultCount: allResults.filter(r => r.userId === user.user_id).length
+    }));
+};
+
+const getUserWithResults = async (userId: string): Promise<{ user: User, results: TestResult[] }> => {
+    await delay(300);
+    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
+    const user = (DB.getItem<User[]>('users') || []).find(u => u.user_id === userId);
+    if (!user) throw new ApiError("User not found");
+    const allResults = DB.getItem<{ userId: string; result: TestResult }[]>('results') || [];
+    const userResults = allResults.filter(r => r.userId === userId).map(r => r.result);
+    return { user, results: userResults };
+};
+
+const updateTest = async (updatedTest: Test): Promise<Test> => {
+    await delay(600);
+    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
+    const tests = await getTests();
+    const index = tests.findIndex(t => t.id === updatedTest.id);
+    if (index === -1) throw new ApiError("Test not found for update");
+    tests[index] = updatedTest;
+    DB.setItem('tests', tests);
+    return updatedTest;
+};
+
+const createTest = async (newTest: Omit<Test, 'id'>): Promise<Test> => {
+    await delay(600);
+    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
+    const tests = await getTests();
+    const createdTest: Test = {
+        ...newTest,
+        id: newTest.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') as TestId,
+    };
+    tests.push(createdTest);
+    DB.setItem('tests', tests);
+    return createdTest;
+};
+
+const deleteTest = async (testId: TestId): Promise<void> => {
+    await delay(500);
+    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
+    const tests = await getTests();
+    const filteredTests = tests.filter(t => t.id !== testId);
+    DB.setItem('tests', filteredTests);
+};
+
+
 export const apiService = {
   bootstrap,
   getMe,
@@ -322,4 +426,14 @@ export const apiService = {
   clearTestProgress,
   getToken: () => DB.getItem<string>(TOKEN_KEY),
   clearToken: () => DB.removeItem(TOKEN_KEY),
+  // Admin
+  adminLogin,
+  checkAdminAuth,
+  adminLogout,
+  getDashboardStats,
+  getAllUsersWithResults,
+  getUserWithResults,
+  updateTest,
+  createTest,
+  deleteTest,
 };

@@ -1,18 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import Welcome from './pages/Welcome';
 import Dashboard from './pages/TestSelection'; // Renamed to Dashboard conceptually
 import TestRunner from './pages/TestRunner';
 import Results from './pages/Results';
-import Chat from './pages/Chat'; // Import the new Chat page
+import Chat from './pages/Chat';
 import RecoveryCode from './pages/RecoveryCode';
 import EnterRecoveryCode from './pages/EnterRecoveryCode';
 import History from './pages/History';
-import Orientation from './pages/Orientation'; // Import the new Orientation page
-import Sidebar from './components/Sidebar'; // Import the new Sidebar component
+import Orientation from './pages/Orientation';
+import Sidebar from './components/Sidebar';
 import { Test, TestResult, User } from './types';
 import { apiService } from './services/apiService';
 import { DataProvider } from './context/DataContext';
+
+// Admin imports
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import TestManagement from './pages/admin/TestManagement';
+import TestEditor from './pages/admin/TestEditor';
+import UserManagement from './pages/admin/UserManagement';
+import UserResults from './pages/admin/UserResults';
+import PrintableResult from './pages/PrintableResult';
 
 const MobileNavToggle: React.FC<{ onToggle: () => void }> = ({ onToggle }) => (
     <button
@@ -20,7 +30,7 @@ const MobileNavToggle: React.FC<{ onToggle: () => void }> = ({ onToggle }) => (
         className="md:hidden fixed top-4 left-4 z-[250] p-2 rounded-md bg-white/50 backdrop-blur-sm text-gray-800"
         aria-label="Menüyü aç"
     >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
     </button>
@@ -65,6 +75,7 @@ const AppLayout: React.FC<{ user: User | null; onLogout: () => void; children: R
 
 function App(): React.ReactNode {
   const [user, setUser] = useState<User | null>(null);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedTest, setSelectedTest] = useState<Test | null>(null);
   const [testResult, setTestResult] = useState<TestResult | null>(null);
@@ -72,29 +83,42 @@ function App(): React.ReactNode {
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = apiService.getToken();
-      if (token) {
-        try {
-          const userData = await apiService.getMe();
-          setUser(userData);
-          if (location.pathname === '/' || location.pathname === '/enter-recovery') {
-            navigate('/select');
-          }
-        } catch (error) {
-          console.error("Token validation failed", error);
-          apiService.clearToken();
-          setUser(null);
-          navigate('/');
+  const checkAuth = useCallback(async () => {
+    const isUserPath = !location.pathname.startsWith('/admin');
+    const isAdminPath = location.pathname.startsWith('/admin');
+    
+    // Check admin auth
+    const adminIsAuthenticated = await apiService.checkAdminAuth();
+    setIsAdmin(adminIsAuthenticated);
+    if (isAdminPath && !adminIsAuthenticated && location.pathname !== '/admin/login') {
+      navigate('/admin/login');
+    }
+
+    // Check user auth
+    const token = apiService.getToken();
+    if (token) {
+      try {
+        const userData = await apiService.getMe();
+        setUser(userData);
+        if (isUserPath && (location.pathname === '/' || location.pathname === '/enter-recovery')) {
+          navigate('/select');
         }
-      } else {
-         setUser(null);
+      } catch (error) {
+        console.error("Token validation failed", error);
+        apiService.clearToken();
+        setUser(null);
+        if (isUserPath) navigate('/');
       }
-      setIsLoading(false);
-    };
-    checkAuth();
+    } else {
+      setUser(null);
+    }
+    setIsLoading(false);
   }, [navigate, location.pathname]);
+
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
 
   const handleLogin = (user: User) => {
     setUser(user);
@@ -114,12 +138,54 @@ function App(): React.ReactNode {
     navigate('/results');
   };
 
+  const handleAdminLogin = async (pass: boolean) => {
+    if (pass) {
+        setIsAdmin(true);
+        navigate('/admin/dashboard');
+    }
+  };
+
+  const handleAdminLogout = () => {
+      apiService.adminLogout();
+      setIsAdmin(false);
+      navigate('/admin/login');
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen w-full flex items-center justify-center">
         <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#2EA446]"></div>
       </div>
     );
+  }
+
+  // Admin routes
+  if (location.pathname.startsWith('/admin')) {
+      if (!isAdmin) {
+          return <AdminLogin onLogin={handleAdminLogin} />;
+      }
+      return (
+          <AdminLayout onLogout={handleAdminLogout}>
+              <Routes>
+                  <Route path="/dashboard" element={<AdminDashboard />} />
+                  <Route path="/tests" element={<TestManagement />} />
+                  <Route path="/tests/edit/:testId" element={<TestEditor />} />
+                  <Route path="/tests/new" element={<TestEditor />} />
+                  <Route path="/users" element={<UserManagement />} />
+                  <Route path="/users/:userId" element={<UserResults />} />
+                  <Route path="*" element={<Navigate to="/admin/dashboard" />} />
+              </Routes>
+          </AdminLayout>
+      );
+  }
+  
+  // Printable result route (no layout)
+  if (location.pathname === '/results/print') {
+      return (
+          <Routes>
+              <Route path="/" element={<PrintableResult />} />
+          </Routes>
+      )
   }
 
   // Unauthenticated routes
@@ -130,6 +196,7 @@ function App(): React.ReactNode {
                 <Route path="/" element={<Welcome />} />
                 <Route path="/show-recovery" element={<RecoveryCode />} />
                 <Route path="/enter-recovery" element={<EnterRecoveryCode onRecoverySuccess={handleLogin} />} />
+                <Route path="/admin/login" element={<AdminLogin onLogin={handleAdminLogin} />} />
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </div>

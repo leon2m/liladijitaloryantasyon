@@ -56,6 +56,10 @@ function Results({ result }: ResultsProps): React.ReactNode {
 
   const chartData = result.scores.map(s => ({ name: s.name, score: Math.round(s.score), color: s.color }));
 
+  const handlePrint = () => {
+      navigate('/results/print', { state: { result } });
+  };
+
   return (
     <div className="p-4 md:p-10 glass-card w-full max-w-5xl">
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center text-gray-900">
@@ -73,12 +77,18 @@ function Results({ result }: ResultsProps): React.ReactNode {
           </div>
         </div>
       </div>
-      <div className="text-center mt-12">
+      <div className="text-center mt-12 flex flex-col sm:flex-row justify-center items-center gap-4">
         <button
           onClick={() => navigate('/select')}
           className="btn-primary"
         >
           Başka Bir Test Yap
+        </button>
+        <button
+          onClick={handlePrint}
+          className="btn-secondary"
+        >
+          Raporu Yazdır / PDF İndir
         </button>
       </div>
     </div>
