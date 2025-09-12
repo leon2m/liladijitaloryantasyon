@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { OrientationStep, Test } from '../types';
 import { apiService } from '../services/apiService';
@@ -56,7 +56,6 @@ function Orientation({ onTestSelect }: OrientationProps): React.ReactNode {
     } = useData();
 
     const [activeStepId, setActiveStepId] = useState<string | null>(null);
-    const contentPanelRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!isLoading) {
@@ -67,7 +66,8 @@ function Orientation({ onTestSelect }: OrientationProps): React.ReactNode {
     
     const handleStepClick = (stepId: string) => {
         setActiveStepId(stepId);
-        contentPanelRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+        // We scroll the window now, not a specific panel
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     const handleCompleteStep = async (stepId: string) => {
@@ -99,10 +99,10 @@ function Orientation({ onTestSelect }: OrientationProps): React.ReactNode {
     const activeStep = allOrientationSteps.find(s => s.id === activeStepId);
 
     return (
-        <div className="flex flex-col md:flex-row w-full h-full gap-8" style={{maxHeight: 'calc(100vh - 5rem)'}}>
-            {/* Left Panel: Timeline */}
-            <div className="w-full md:w-2/5 flex-shrink-0 h-full overflow-hidden">
-                <div className="glass-card h-full overflow-y-auto p-4 md:p-6 fade-in">
+        <div className="flex flex-col md:flex-row w-full gap-8">
+            {/* Left Panel: Timeline (will scroll with the page) */}
+            <div className="w-full md:w-2/5 flex-shrink-0">
+                <div className="glass-card p-4 md:p-6 fade-in">
                     <h2 className="text-2xl font-bold mb-2 text-gray-800 text-center">Oryantasyon Yolculuğu</h2>
                      <div className="timeline">
                         {Object.entries(orientationData).map(([weekKey, weekData], weekIndex) => {
@@ -148,20 +148,22 @@ function Orientation({ onTestSelect }: OrientationProps): React.ReactNode {
                     </div>
                 </div>
             </div>
-            {/* Right Panel: Content */}
-            <div className="w-full md:w-3/5 h-full overflow-y-auto" ref={contentPanelRef}>
-                {activeStep ? (
-                     <StepContent 
-                        step={activeStep}
-                        isCompleted={completedOrientationSteps.includes(activeStep.id)}
-                        onComplete={() => handleCompleteStep(activeStep.id)}
-                        onStartTest={() => handleStartTest(activeStep)}
-                     />
-                ) : (
-                    <div className="flex items-center justify-center h-full">
-                        <p className="text-gray-500">Başlamak için bir adım seçin.</p>
-                    </div>
-                )}
+            {/* Right Panel: Content (will be sticky) */}
+            <div className="w-full md:w-3/5">
+                <div className="sticky top-8">
+                    {activeStep ? (
+                         <StepContent 
+                            step={activeStep}
+                            isCompleted={completedOrientationSteps.includes(activeStep.id)}
+                            onComplete={() => handleCompleteStep(activeStep.id)}
+                            onStartTest={() => handleStartTest(activeStep)}
+                         />
+                    ) : (
+                        <div className="flex items-center justify-center h-full glass-card p-8">
+                            <p className="text-gray-500">Başlamak için bir adım seçin.</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

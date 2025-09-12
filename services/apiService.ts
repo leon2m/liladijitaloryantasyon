@@ -198,6 +198,8 @@ const getMe = async (): Promise<User> => {
 // Simulates GET /api/tests - now reads from localStorage
 const getTests = async (): Promise<Test[]> => {
     await delay(500);
+    // FIX: Ensure tests are seeded whenever this function is called.
+    // This fixes the empty admin panel issue if an admin logs in first.
     await seedTestsToLocalStorage();
     if (!DB.getItem<string>(TOKEN_KEY) && !DB.getItem<string>(ADMIN_TOKEN_KEY)) {
       throw new ApiError("Authentication required");
