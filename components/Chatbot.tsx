@@ -23,7 +23,7 @@ function Chatbot(): React.ReactNode {
     if (isOpen && !chatbotData) {
         const fetchChatbotData = async () => {
             try {
-                const response = await fetch('/data/chatbot.json');
+                const response = await fetch('data/chatbot.json');
                 if (!response.ok) {
                     throw new Error(`HTTP hatası! durum: ${response.status}`);
                 }

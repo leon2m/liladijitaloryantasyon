@@ -188,7 +188,7 @@ const getTests = async (): Promise<Test[]> => {
     await delay(500);
     if (!DB.getItem<string>(TOKEN_KEY)) throw new ApiError("Authentication required");
 
-    const response = await fetch('/data/tests.json');
+    const response = await fetch('data/tests.json');
     if (!response.ok) throw new ApiError(`HTTP error! status: ${response.status}`);
     return await response.json();
 };
@@ -269,7 +269,7 @@ const getPastResults = async (): Promise<TestResult[]> => {
 
 const getOrientation = async (): Promise<OrientationData> => {
     await delay(200);
-    const response = await fetch('/data/orientation.json');
+    const response = await fetch('data/orientation.json');
     if (!response.ok) throw new ApiError(`HTTP error! status: ${response.status}`);
     return await response.json();
 }
