@@ -39,7 +39,7 @@ function Welcome(): React.ReactNode {
         </svg>
       </div>
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-gray-900">
-        Lila Explorer'a Hoş Geldiniz
+        Lila Ddijital Oryantasyon Programına Hoş Geldiniz
       </h1>
       <p className="text-base md:text-lg text-gray-600 mb-8 max-w-2xl">
         Kendini keşfetme ve profesyonel gelişim yolculuğunuz burada başlıyor. Başlamak için lütfen bilgilerinizi girip veri gizliliği politikamızı kabul edin.
