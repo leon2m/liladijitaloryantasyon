@@ -1,3 +1,7 @@
+// @DEPRECATED: This component is obsolete and should be deleted.
+// It was only used to display the recovery code, which is no longer part of the
+// authentication system.
+
 import React from 'react';
 
 interface QRCodeProps {

@@ -1,6 +1,20 @@
-# Lila Explorer - Implemented Features (DONE)
+# Lila Dijital Oryantasyon Programı - Implemented Features (DONE)
 
 This file lists the features and functionalities that have been successfully implemented in the application as of the current version.
+
+## Backend & Architecture
+- [x] **Backend Migration**: Successfully migrated from a `localStorage`-based mock to a real FastAPI backend.
+- [x] **RESTful API Integration**: Frontend services (`apiService`) now communicate with live backend endpoints.
+- [x] **Dual Authentication Model**: Implemented frontend logic to handle both user device tokens (`X-Device-Token`) and admin JWTs (`Authorization: Bearer`).
+- [x] **Backend-Powered AI Chat**: The chat interface now routes messages through a secure backend endpoint instead of a client-side library.
+
+## Admin Panel
+- [x] **Admin Authentication**: Created a secure login page for administrators (`/admin/login`).
+- [x] **Admin Layout**: Built a dedicated layout with a sidebar for all admin pages.
+- [x] **Dashboard**: Implemented a dashboard displaying key statistics (total users, total tests) and a chart for test distribution.
+- [x] **User Management**: Admins can view a list of all users and their completed test counts.
+- [x] **User Results Viewer**: Admins can drill down to see the specific test results for any user.
+- [x] **Test Management**: A complete CRUD interface for managing tests, including a form-based editor for questions, options, and scoring profiles.
 
 ## Core Application & UI
 
@@ -12,10 +26,8 @@ This file lists the features and functionalities that have been successfully imp
 
 ## Authentication & User Management
 
-- [x] **Device-Based Authentication**: Implemented a password-less login system.
+- [x] **Device-Based Authentication**: Implemented a password-less login system based on a device-specific token.
 - [x] **User Onboarding**: Users can create a new profile simply by providing their first and last name.
-- [x] **Recovery Code Generation**: A unique, persistent recovery code is generated and displayed to the user upon registration, along with a QR code.
-- [x] **Account Recovery Flow**: Users can log in on a new device using their previously saved recovery code.
 - [x] **Logout Functionality**: Users can securely log out, which clears the device token from local storage.
 
 ## Psychometric Assessments
@@ -26,14 +38,14 @@ This file lists the features and functionalities that have been successfully imp
     - [x] Social Color Personality
     - [x] Learning Styles
 - [x] **Progress Tracking**: A progress bar visually indicates the user's progress through the current test.
-- [x] **Result Calculation**: Implemented score calculation logic within the `apiService` that processes user answers based on predefined scoring rules.
+- [x] **Test Resumption**: Users can leave a test mid-way and resume from where they left off.
 
 ## Results & Reporting
 
 - [x] **Results Page**: Created a dedicated page to display detailed test results.
 - [x] **Data Visualization**: Integrated `recharts` to display results in dynamic, visually appealing charts (Radar chart for Belbin, Bar chart for others).
-- [x] **Simulated AI Interpretation**: The application provides a personalized, text-based interpretation of the results, simulating an AI-powered analysis.
-- [x] **Results Persistence**: All completed test results are saved to the user's profile in the mock database (`localStorage`).
+- [x] **AI Interpretation**: The application provides a personalized, text-based interpretation of the results, powered by the backend AI service.
+- [x] **Results Persistence**: All completed test results are saved via the backend.
 
 ## User Experience & Features
 
@@ -44,5 +56,5 @@ This file lists the features and functionalities that have been successfully imp
     - [x] A multi-step onboarding experience is available from the sidebar and dashboard.
     - [x] Orientation progress is tracked and saved for each user.
     - [x] The module integrates directly with the testing engine, prompting users to take specific tests as part of their orientation.
-- [x] **Chatbot**: A floating chatbot widget provides answers to common questions based on a simple keyword-matching system.
+- [x] **AI Chat**: An AI-powered chat page (`/chat`) provides helpful answers to user questions.
 - [x] **Loading States**: Implemented loading spinners and UI feedback for all asynchronous operations, ensuring a smooth user experience.

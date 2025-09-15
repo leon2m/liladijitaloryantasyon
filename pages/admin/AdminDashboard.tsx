@@ -80,7 +80,8 @@ function AdminDashboard(): React.ReactNode {
                                 fill="#8884d8"
                                 dataKey="value"
                                 nameKey="name"
-                                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                // Fix: Explicitly type the label props to avoid TypeScript error with recharts.
+                                label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
                             >
                                 {stats.distribution.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

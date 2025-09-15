@@ -29,7 +29,7 @@ function AdminSidebar({ onLogout }: AdminSidebarProps): React.ReactNode {
     <aside className="w-64 bg-white/50 border-r border-gray-200/80 flex-shrink-0 p-4">
         <div className="flex flex-col h-full">
             <div className="text-left mb-12 p-2">
-                <h1 className="text-2xl font-bold text-gray-900">Lila Explorer</h1>
+                <h1 className="text-2xl font-bold text-gray-900">Lila Dijital Oryantasyon</h1>
                 <p className="text-sm text-gray-500 mt-1">Admin Paneli</p>
             </div>
             

@@ -3,414 +3,341 @@ import {
   TestId,
   UserAnswers,
   TestResult,
-  Score,
   BootstrapPayload,
   User,
   BootstrapResponse,
-  PairResponse,
   ApiError,
-  OrientationStep,
   OrientationData,
   TestProgress,
-  ResultProfile
+  Score,
+  QuestionOption,
 } from '../types';
 
-// --- Local Storage Database Simulation ---
-
-const DB = {
-  getItem: <T>(key: string): T | null => {
-    try {
-      const item = localStorage.getItem(key);
-      return item ? JSON.parse(item) : null;
-    } catch (error) {
-      console.error(`Error getting item ${key} from localStorage`, error);
-      return null;
-    }
-  },
-  setItem: <T>(key: string, value: T): void => {
-    localStorage.setItem(key, JSON.stringify(value));
-  },
-  removeItem: (key: string): void => {
-    localStorage.removeItem(key);
-  }
-};
-
-// --- Helper Functions ---
-
-const generateId = () => crypto.randomUUID();
-const generateSecureString = (length = 32) => {
-    const array = new Uint8Array(length);
-    crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-};
-
-// --- Test Data Seeding ---
-const seedTestsToLocalStorage = async () => {
-    if (!DB.getItem('tests')) {
-        console.log("Seeding tests to local storage...");
-        const response = await fetch('data/tests.json');
-        const tests: Test[] = await response.json();
-        DB.setItem('tests', tests);
-    }
-};
-
-// --- Mock Backend Logic ---
-
-// This function simulates the backend's calculation logic.
-const calculateResults = (test: Test, answers: UserAnswers): Omit<TestResult, 'interpretation' | 'submitted_at'> => {
-  const totalScores: Record<string, number> = {};
-  const maxScores: Record<string, number> = {};
-  const profileKeys = Object.keys(test.resultProfiles);
-
-  profileKeys.forEach(key => {
-    const profileName = test.resultProfiles[key].name;
-    totalScores[profileName] = 0;
-    maxScores[profileName] = 0;
-  });
-
-  Object.values(answers).forEach(answer => {
-    Object.entries(answer.scores).forEach(([profileKey, score]) => {
-      const profileName = test.resultProfiles[profileKey]?.name;
-      if (profileName && totalScores[profileName] !== undefined) {
-        totalScores[profileName] += score;
-      }
-    });
-  });
-
-  test.questions.forEach(question => {
-    const questionMaxScores: Record<string, number> = {};
-     profileKeys.forEach(key => {
-        const profileName = test.resultProfiles[key].name;
-        questionMaxScores[profileName] = 0;
-     });
-
-    question.options.forEach(option => {
-      Object.entries(option.scores).forEach(([profileKey, score]) => {
-        const profileName = test.resultProfiles[profileKey]?.name;
-        if (profileName && score > questionMaxScores[profileName]) {
-          questionMaxScores[profileName] = score;
-        }
-      });
-    });
-    
-    Object.entries(questionMaxScores).forEach(([profileName, maxScore]) => {
-        maxScores[profileName] += maxScore;
-    });
-  });
-  
-  const finalScores: Score[] = Object.entries(totalScores).map(([profileName, score]) => {
-    const profileDetails = Object.values(test.resultProfiles).find(p => p.name === profileName);
-    const maxScore = maxScores[profileName];
-    const percentage = maxScore > 0 ? (score / maxScore) * 100 : 0;
-
-    return {
-      id: profileName.toLowerCase().replace(/ /g, '-').replace(/[^a-z0-9-]/g, ''),
-      name: profileName,
-      score: percentage,
-      color: profileDetails?.color || '#cccccc'
-    };
-  }).sort((a, b) => b.score - a.score);
-
-  return {
-    testId: test.id,
-    testName: test.name,
-    scores: finalScores,
-  };
-};
-
-// This function simulates the Gemini API call on the backend.
-const generateInterpretation = async (result: Omit<TestResult, 'interpretation' | 'submitted_at'>): Promise<string> => {
-  await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate network delay
-
-  const sortedScores = [...result.scores].sort((a, b) => b.score - a.score);
-  if (sortedScores.length < 2) {
-    return "Sonuçlarınızı yorumlamak için yeterli veri yok.";
-  }
-  const primaryTrait = sortedScores[0];
-  const secondaryTrait = sortedScores[1];
-
-  switch (result.testId) {
-    case 'belbin':
-      return `Belbin Takım Rolleri değerlendirmesini tamamladığınız için tebrikler! Sonuçlarınız, **${primaryTrait.name}** rolüne güçlü bir eğilim gösteriyor. Bu güce sahip insanlar genellikle ${primaryTrait.name === 'Uygulayıcı' ? 'pratik ve verimli' : primaryTrait.name === 'Şekillendirici' ? 'dinamik ve azimli' : 'yaratıcı ve yenilikçi'} olarak görülür. İkincil gücünüz olan **${secondaryTrait.name}** rolü, buna ${secondaryTrait.name === 'Gözlemci-Değerlendirici' ? 'stratejik düşünme' : 'işbirlikçi bir ruh'} katmanı ekleyerek bunu tamamlar.
-
-Bu kombinasyon, hem girişimleri ileriye taşımada hem de bunların iyi düşünülmüş olmasını sağlamada oldukça etkili olduğunuzu gösteriyor. Bir takım ortamında, harekete geçmek için birincil gücünüzden yararlanın ve fikirleri işbirliği içinde geliştirmek ve iyileştirmek için ikincil gücünüzü kullanın. Unutmayın ki bu roller sınırlamalar değil, tercihlerdir. Daha da çok yönlü bir işbirlikçi olmak için takım çalışmasının farklı yönlerini keşfetmeye devam edin.`;
-    case 'social_color':
-      return `Sosyal Renk Kişilik değerlendirmesini tamamladığınız için teşekkür ederiz! Baskın renginiz **${primaryTrait.name}**, bu da öncelikle ${primaryTrait.name === 'Kırmızı' ? 'güç ve başarı' : primaryTrait.name === 'Mavi' ? 'mantık ve analiz' : primaryTrait.name === 'Yeşil' ? 'uyum ve istikrar' : 'coşku ve bağlantı'} ile motive olduğunuzu gösteriyor. İkincil renginiz olan **${secondaryTrait.name}**, buna bir ${secondaryTrait.name === 'Kırmızı' ? 'kararlılık' : secondaryTrait.name === 'Mavi' ? 'kesinlik' : secondaryTrait.name === 'Yeşil' ? 'sabır' : 'yaratıcılık'} boyutu katıyor.
-
-Bu eşsiz karışım, durumlara hem ${primaryTrait.name}'nin enerjisiyle hem de ${secondaryTrait.name}'nin bakış açısıyla yaklaştığınızı gösteriyor. İletişiminizi geliştirmek için, ana renkleri sizinkinden farklı olan diğer insanlara karşı dikkatli olmaya çalışın. Onların motivasyonlarını anlamak, daha etkili ve empatik etkileşimlere yol açabilir. Renk profilinizi benimsemek, kişilerarası dinamiklerinizde ustalaşmaya yönelik harika bir adımdır.`;
-    case 'learning_style':
-      return `Öğrenme Stili değerlendirmesini tamamladığınız için harika bir iş çıkardınız! Sonuçlarınız, **${primaryTrait.name}** öğrenme stiline güçlü bir tercih gösteriyor. Bu, muhtemelen en iyi ${primaryTrait.name === 'Görsel' ? 'şemalar ve yazılı metinler gibi şeyleri görerek ve gözlemleyerek' : primaryTrait.name === 'İşitsel' ? 'dersler veya grup tartışmaları gibi dinleyerek ve konuşarak' : 'uygulamalı deneyim ve fiziksel aktivite yoluyla'} öğrendiğiniz anlamına gelir.
-
-Öğrenmenizi en üst düzeye çıkarmak için, aktif olarak bu stile hitap eden materyalleri ve yöntemleri arayın. Örneğin, bir Görsel öğrenen zihin haritaları kullanabilir, bir İşitsel öğrenen dersleri kaydedebilir ve bir Kinestetik öğrenen modeller inşa edebilir. Baskın bir stiliniz olsa da, diğer stillerden unsurları birleştirmek daha dengeli ve sağlam bir öğrenme deneyimi yaratabilir. Sizin için neyin işe yaradığını keşfetmeye devam edin ve tam öğrenme potansiyelinizi ortaya çıkaracaksınız.`;
-    default:
-      return `**${result.testName}** testini tamamladınız. Sonuçlarınız, **${primaryTrait.name}** özelliğine güçlü bir eğilim gösterdiğinizi ortaya koyuyor. Bu, genellikle [özellikle ilgili genel bir açıklama] olduğunuzu gösterir. İkincil olarak, **${secondaryTrait.name}** özelliğiniz de dikkat çekicidir. Bu iki özelliğin birleşimi, [iki özelliğin nasıl etkileşime girdiğine dair kısa bir yorum] olduğunuzu gösterir. Bu bilgileri profesyonel ve kişisel gelişiminiz için bir başlangıç noktası olarak kullanabilirsiniz.`;
-  }
-};
-
-
-// --- API Service ---
-
+// --- Sabitler ---
 const TOKEN_KEY = 'device_token';
 const ADMIN_TOKEN_KEY = 'admin_token';
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+const USER_DATA_KEY_PREFIX = 'user_data_';
 
-// Simulates /api/bootstrap
+// --- Statik veri için bellek içi önbellek ---
+let testsCache: Test[] | null = null;
+let orientationCache: OrientationData | null = null;
+let chatbotCache: any = null;
+
+// --- Yardımcı Fonksiyonlar ---
+
+const getUserIdFromToken = (token: string | null): string | null => {
+    if (!token) return null;
+    // Bu mock'ta, basitlik adına token KULLANICI ID'SİDİR.
+    return token;
+};
+
+// --- Mock API Servisi ---
+
+/**
+ * Kullanıcı oluşturma sürecini taklit eder.
+ */
 const bootstrap = async (payload: BootstrapPayload): Promise<BootstrapResponse> => {
-  await delay(500);
-  await seedTestsToLocalStorage(); // Ensure tests are in localStorage
-  const userId = generateId();
-  const deviceId = generateId();
-  const device_token = `dt_${generateSecureString()}`;
-  const recovery_code = `${generateSecureString(8)}-${generateSecureString(8)}`;
-
+  const userId = `user_${Date.now()}`;
   const user: User = {
     user_id: userId,
     first_name: payload.first_name,
     last_name: payload.last_name,
   };
+  const device_token = userId; // Bu mock'ta token olarak kullanıcı ID'sini kullan
 
-  // Store data in our mock DB
-  DB.setItem('users', [...(DB.getItem<User[]>('users') || []), user]);
-  DB.setItem('devices', [...(DB.getItem<any[]>('devices') || []), { deviceId, userId, token: device_token }]);
-  DB.setItem('recovery_codes', [...(DB.getItem<any[]>('recovery_codes') || []), { userId, code: recovery_code }]);
-  DB.setItem(`orientation_progress_${userId}`, []); // Initialize orientation progress
+  const userData = {
+      user,
+      results: [],
+      orientationProgress: [],
+  };
 
-  DB.setItem(TOKEN_KEY, device_token);
-
-  return { device_token, recovery_code, user };
+  localStorage.setItem(`${USER_DATA_KEY_PREFIX}${userId}`, JSON.stringify(userData));
+  localStorage.setItem(TOKEN_KEY, device_token);
+  
+  return { device_token, user, recovery_code: '' };
 };
 
-// Simulates /api/me
+/**
+ * Mevcut kullanıcının verilerini localStorage'dan alır.
+ */
 const getMe = async (): Promise<User> => {
-    await delay(300);
-    const token = DB.getItem<string>(TOKEN_KEY);
-    if (!token) throw new ApiError("No token found");
-
-    const device = (DB.getItem<any[]>('devices') || []).find(d => d.token === token);
-    if (!device) throw new ApiError("Invalid token");
-
-    const user = (DB.getItem<User[]>('users') || []).find(u => u.user_id === device.userId);
-    if (!user) throw new ApiError("User not found for this token");
-    
-    return user;
-};
-
-// Simulates GET /api/tests - now reads from localStorage
-const getTests = async (): Promise<Test[]> => {
-    await delay(500);
-    // FIX: Ensure tests are seeded whenever this function is called.
-    // This fixes the empty admin panel issue if an admin logs in first.
-    await seedTestsToLocalStorage();
-    if (!DB.getItem<string>(TOKEN_KEY) && !DB.getItem<string>(ADMIN_TOKEN_KEY)) {
-      throw new ApiError("Authentication required");
+    const token = localStorage.getItem(TOKEN_KEY);
+    const userId = getUserIdFromToken(token);
+    if (!userId) {
+        throw new ApiError("Aktif oturum bulunamadı.");
     }
-    const tests = DB.getItem<Test[]>('tests');
-    return tests || [];
+    const userDataString = localStorage.getItem(`${USER_DATA_KEY_PREFIX}${userId}`);
+    if (!userDataString) {
+        throw new ApiError("Mevcut oturum için kullanıcı verisi bulunamadı.");
+    }
+    const userData = JSON.parse(userDataString);
+    return userData.user;
 };
 
+/**
+ * Test tanımlarını statik JSON dosyasından getirir.
+ */
+const getTests = async (): Promise<Test[]> => {
+    if (testsCache) {
+        return testsCache;
+    }
+    try {
+        const response = await fetch('/data/tests.json');
+        if (!response.ok) throw new Error('Test verileri getirilemedi');
+        const data: Test[] = await response.json();
+        testsCache = data;
+        return data;
+    } catch (e) {
+        console.error(e);
+        throw new ApiError('Test verileri yüklenemedi.');
+    }
+};
 
-// Simulates POST /api/tests/:test_key/submit
+/**
+ * Puanlama ve yapay zeka yorumlaması dahil olmak üzere test gönderme sürecini taklit eder.
+ */
 const submitTest = async (testId: TestId, answers: UserAnswers): Promise<TestResult> => {
-    await delay(2000);
-    const user = await getMe();
+    const allTests = await getTests();
+    const test = allTests.find(t => t.id === testId);
 
-    const tests = await getTests();
-    const test = tests.find(t => t.id === testId);
-    if (!test) throw new ApiError("Test not found");
+    if (!test) {
+        throw new ApiError("Test bulunamadı.");
+    }
 
-    const calculatedResult = calculateResults(test, answers);
-    const interpretation = await generateInterpretation(calculatedResult);
+    // 1. Puanları hesapla
+    const scores: { [key: string]: number } = {};
+    Object.keys(test.resultProfiles).forEach(key => {
+      scores[key] = 0;
+    });
+
+    Object.values(answers).forEach((option: QuestionOption) => {
+        if (option.scores) {
+            for (const profileKey in option.scores) {
+                if (scores.hasOwnProperty(profileKey)) {
+                    scores[profileKey] += option.scores[profileKey];
+                }
+            }
+        }
+    });
+
+    const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
     
-    const finalResult: TestResult = { 
-        ...calculatedResult, 
+    const finalScores: Score[] = Object.entries(scores)
+        .map(([key, score]) => ({
+            id: key,
+            name: test.resultProfiles[key]?.name || 'Bilinmeyen',
+            color: test.resultProfiles[key]?.color || '#cccccc',
+            score: totalScore > 0 ? (score / totalScore) * 100 : 0,
+        }))
+        .sort((a, b) => b.score - a.score);
+
+    // 2. Mock yapay zeka yorumu oluştur
+    const dominantProfile = finalScores[0];
+    const dominantProfileDetails = test.resultProfiles[dominantProfile.id];
+    const interpretation = `Analiz sonuçlarınıza göre, en baskın profiliniz **${dominantProfile.name}** olarak belirlenmiştir.\n\nBu, genellikle **${dominantProfileDetails.description.toLowerCase()}** eğiliminde olduğunuzu gösterir. Bu özelliğiniz, takım çalışmalarında ve problem çözme süreçlerinde önemli bir rol oynar. Güçlü yönlerinizi anlamak, hem kişisel hem de profesyonel gelişiminiz için harika bir adımdır.\n\n*Bu yorum, temel sonuçlara dayalı olarak oluşturulmuştur.*`;
+    
+    const result: TestResult = {
+        testId,
+        testName: test.name,
+        scores: finalScores,
         interpretation,
-        submitted_at: new Date().toISOString()
+        submitted_at: new Date().toISOString(),
     };
+
+    // 3. Sonucu localStorage'daki kullanıcı verilerine kaydet
+    const token = localStorage.getItem(TOKEN_KEY);
+    const userId = getUserIdFromToken(token);
+    if (!userId) throw new ApiError("Sonucu kaydetmek için kullanıcı oturumu bulunamadı.");
     
-    const results = DB.getItem<any[]>('results') || [];
-    DB.setItem('results', [...results, { userId: user.user_id, result: finalResult }]);
+    const userDataString = localStorage.getItem(`${USER_DATA_KEY_PREFIX}${userId}`);
+    if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        userData.results.push(result);
+        localStorage.setItem(`${USER_DATA_KEY_PREFIX}${userId}`, JSON.stringify(userData));
+    }
+
+    return result;
+};
+
+/**
+ * Geçmiş sonuçları localStorage'daki kullanıcı verilerinden alır.
+ */
+const getPastResults = async (): Promise<TestResult[]> => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    const userId = getUserIdFromToken(token);
+    if (!userId) return [];
     
-    // Check if this test is part of orientation and update progress
-    const orientationData = await getOrientation();
-    let stepToComplete: OrientationStep | undefined;
+    const userDataString = localStorage.getItem(`${USER_DATA_KEY_PREFIX}${userId}`);
+    return userDataString ? JSON.parse(userDataString).results : [];
+};
+
+/**
+ * Oryantasyon tanımlarını statik JSON dosyasından getirir.
+ */
+const getOrientation = async (): Promise<OrientationData> => {
+    if (orientationCache) {
+        return orientationCache;
+    }
+     try {
+        const response = await fetch('/data/orientation.json');
+        if (!response.ok) throw new Error('Oryantasyon verileri getirilemedi');
+        const data: OrientationData = await response.json();
+        orientationCache = data;
+        return data;
+    } catch (e) {
+        console.error(e);
+        throw new ApiError('Oryantasyon verileri yüklenemedi.');
+    }
+};
+
+/**
+ * Oryantasyon ilerlemesini localStorage'daki kullanıcı verilerinden alır.
+ */
+const getOrientationProgress = async (): Promise<string[]> => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    const userId = getUserIdFromToken(token);
+    if (!userId) return [];
     
-    for (const weekKey in orientationData) {
-        const week = orientationData[weekKey];
-        const step = week.steps.find(s => s.type === 'test' && s.testId === testId);
-        if (step) {
-            stepToComplete = step;
-            break;
+    const userDataString = localStorage.getItem(`${USER_DATA_KEY_PREFIX}${userId}`);
+    return userDataString ? JSON.parse(userDataString).orientationProgress : [];
+};
+
+/**
+ * Oryantasyon ilerlemesini localStorage'daki kullanıcı verilerinde günceller.
+ */
+const updateOrientationProgress = async (stepId: string): Promise<string[]> => {
+    const token = localStorage.getItem(TOKEN_KEY);
+    const userId = getUserIdFromToken(token);
+    if (!userId) throw new ApiError("İlerlemeyi kaydetmek için kullanıcı oturumu bulunamadı.");
+
+    const userDataString = localStorage.getItem(`${USER_DATA_KEY_PREFIX}${userId}`);
+    if (userDataString) {
+        const userData = JSON.parse(userDataString);
+        if (!userData.orientationProgress.includes(stepId)) {
+            userData.orientationProgress.push(stepId);
+        }
+        localStorage.setItem(`${USER_DATA_KEY_PREFIX}${userId}`, JSON.stringify(userData));
+        return userData.orientationProgress;
+    }
+    return [];
+};
+
+// Test ilerlemesi zaten localStorage kullandığı için bu fonksiyonlar olduğu gibi kalabilir.
+const saveTestProgress = (testId: TestId, progress: TestProgress) => {
+    localStorage.setItem(`test_progress_${testId}`, JSON.stringify(progress));
+};
+const getTestProgress = (testId: TestId): TestProgress | null => {
+    const item = localStorage.getItem(`test_progress_${testId}`);
+    return item ? JSON.parse(item) : null;
+};
+const clearTestProgress = (testId: TestId) => {
+    localStorage.removeItem(`test_progress_${testId}`);
+};
+
+/**
+ * Statik chatbot.json dosyasını kullanarak yapay zeka sohbetini taklit eder.
+ */
+const chatWithLila = async (message: string): Promise<string> => {
+    if (!chatbotCache) {
+        try {
+            const response = await fetch('/data/chatbot.json');
+            if (!response.ok) throw new Error('Sohbet verileri getirilemedi');
+            chatbotCache = await response.json();
+        } catch (e) {
+             console.error(e);
+             return "Üzgünüm, sohbet verilerine şu an ulaşılamıyor.";
         }
     }
+    const lowerInput = message.toLowerCase();
+    for (const rule of chatbotCache.rules) {
+      if (rule.keywords.some((keyword: string) => lowerInput.includes(keyword))) {
+        return rule.response;
+      }
+    }
+    return chatbotCache.fallback;
+};
+
+const getDevelopmentSuggestions = async (testId: TestId, traitName: string): Promise<string> => {
+    // Simulating an AI call with a delay
+    await new Promise(resolve => setTimeout(resolve, 800));
+
+    let suggestions = `**${traitName}** profilinize özel gelişim önerileri:\n\n`;
+
+    switch (testId) {
+        case TestId.BELBIN:
+            suggestions += `*   **Güçlü Yönlerinizi Kullanın:** ${traitName} rolünüzün doğal yeteneklerini projelerde aktif olarak sergileyin. Örneğin, eğer bir 'Yaratıcı' iseniz, beyin fırtınası seanslarında liderlik yapın.\n*   **Dengeyi Bulun:** Her rolün bir 'izin verilen zayıflığı' vardır. Bu yönünüzün farkında olun ve takım arkadaşlarınızın farklı rolleriyle dengelemeye çalışın.\n*   **İletişim Kurun:** Takım arkadaşlarınıza rolünüzü ve nasıl en verimli çalıştığınızı anlatın. Bu, beklentileri yönetmenize yardımcı olacaktır.`;
+            break;
+        case TestId.SOCIAL_COLOR:
+            suggestions += `*   **Farklı Renklerle İletişim:** Unutmayın, herkes sizin gibi iletişim kurmaz. Örneğin, bir 'Mavi' ile konuşurken daha fazla veri ve mantık kullanmaya, bir 'Yeşil' ile konuşurken daha empatik ve sabırlı olmaya çalışın.\n*   **Stres Yönetimi:** Stres altındayken ${traitName} renginin olumsuz yönlerini gösterme eğiliminde olabilirsiniz. Bu anları tanıyın ve bilinçli olarak daha yapıcı tepkiler vermeye çalışın.\n*   **Esneklik Gösterin:** Toplantılarda veya projelerde, kendi doğal eğilimlerinizin dışına çıkıp farklı bir 'renk' gibi davranmayı deneyin. Bu, adaptasyon yeteneğinizi artıracaktır.`;
+            break;
+        case TestId.LEARNING_STYLE:
+            suggestions += `*   **Öğrenme Ortamınızı Optimize Edin:** ${traitName} bir öğrenici olarak, öğrenme materyallerinizi stilinize göre düzenleyin. Videolar izleyin, podcast'ler dinleyin veya not alırken hareket edin.\n*   **Çoklu Stil Kullanımı:** Sadece baskın stilinize bağlı kalmayın. Diğer öğrenme stillerini de kullanarak (örneğin, dinlediğiniz bir konunun özetini çizerek) bilgiyi daha kalıcı hale getirebilirsiniz.\n*   **Başkalarına Öğretin:** Öğrendiğiniz bir konuyu, kendi stilinizi kullanarak bir başkasına anlatmak, bilgiyi pekiştirmenin en etkili yollarından biridir.`;
+            break;
+        default:
+            suggestions += `*   Bu özelliğinizi daha iyi anlamak için günlük hayattaki yansımalarını gözlemleyin.\n*   Güçlü yönlerinizi takım arkadaşlarınızla paylaşarak iş birliğini artırın.`;
+    }
     
-    if (stepToComplete) {
-      await updateOrientationProgress(stepToComplete.id);
-    }
-
-    return finalResult;
+    return suggestions;
 };
 
-// Simulates POST /api/recover
-const recover = async (recoveryCode: string): Promise<string> => {
-    await delay(500);
-    const storedCode = (DB.getItem<any[]>('recovery_codes') || []).find(rc => rc.code === recoveryCode);
-    if (!storedCode) throw new ApiError("Invalid recovery code");
-    return storedCode.userId;
-};
+// --- ADMİN PANELİ MOCK API ---
+// Bu fonksiyonlar, admin panelinin çökmesini önlemek için boş/varsayılan veri döndürür.
 
-// Simulates POST /api/pair
-const pair = async (pairingToken: string): Promise<PairResponse> => {
-    await delay(300);
-    const userId = pairingToken;
-    const user = (DB.getItem<User[]>('users') || []).find(u => u.user_id === userId);
-    if (!user) throw new ApiError("Invalid pairing token");
-
-    const deviceId = generateId();
-    const device_token = `dt_${generateSecureString()}`;
-    const devices = DB.getItem<any[]>('devices') || [];
-    DB.setItem('devices', [...devices, { deviceId, userId, token: device_token }]);
-    DB.setItem(TOKEN_KEY, device_token);
-
-    return { device_token, user };
-};
-
-const getPastResults = async (): Promise<TestResult[]> => {
-    await delay(400);
-    const user = await getMe();
-    const allStoredResults = DB.getItem<{ userId: string; result: TestResult }[]>('results') || [];
-    return allStoredResults.filter(entry => entry.userId === user.user_id).map(entry => entry.result);
-};
-
-// --- Orientation Service Functions ---
-
-const getOrientation = async (): Promise<OrientationData> => {
-    await delay(200);
-    const response = await fetch('data/orientation.json');
-    if (!response.ok) throw new ApiError(`HTTP error! status: ${response.status}`);
-    return await response.json();
-}
-
-const getOrientationProgress = async (): Promise<string[]> => {
-    await delay(100);
-    const user = await getMe();
-    return DB.getItem<string[]>(`orientation_progress_${user.user_id}`) || [];
-}
-
-const updateOrientationProgress = async (stepId: string): Promise<string[]> => {
-    await delay(150);
-    const user = await getMe();
-    const progress = await getOrientationProgress();
-    if (!progress.includes(stepId)) {
-        const newProgress = [...progress, stepId];
-        DB.setItem(`orientation_progress_${user.user_id}`, newProgress);
-        return newProgress;
-    }
-    return progress;
-}
-
-// --- Test Progress Service Functions ---
-
-const saveTestProgress = (testId: TestId, progress: TestProgress) => {
-    DB.setItem(`test_progress_${testId}`, progress);
-};
-
-const getTestProgress = (testId: TestId): TestProgress | null => {
-    return DB.getItem<TestProgress>(`test_progress_${testId}`);
-};
-
-const clearTestProgress = (testId: TestId) => {
-    DB.removeItem(`test_progress_${testId}`);
-};
-
-// --- ADMIN PANEL API ---
 const adminLogin = async (username: string, password: string): Promise<boolean> => {
-    await delay(500);
+    // Gerçek bir uygulamada bunu asla yapmayın. Bu sadece demo amaçlıdır.
     if (username === 'admin' && password === 'password') {
-        DB.setItem(ADMIN_TOKEN_KEY, `at_${generateSecureString()}`);
+        localStorage.setItem(ADMIN_TOKEN_KEY, 'mock-admin-jwt');
         return true;
     }
-    throw new ApiError("Invalid admin credentials");
+    throw new ApiError("Geçersiz admin kimlik bilgileri");
 };
 
 const checkAdminAuth = async (): Promise<boolean> => {
-    await delay(100);
-    return !!DB.getItem<string>(ADMIN_TOKEN_KEY);
+    return !!localStorage.getItem(ADMIN_TOKEN_KEY);
 };
 
 const adminLogout = () => {
-    DB.removeItem(ADMIN_TOKEN_KEY);
+    localStorage.removeItem(ADMIN_TOKEN_KEY);
 };
 
 const getDashboardStats = async () => {
-    await delay(400);
-    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
-    const users = DB.getItem<User[]>('users') || [];
-    const results = DB.getItem<{ userId: string; result: TestResult }[]>('results') || [];
-    const testDistribution = results.reduce((acc, { result }) => {
-        acc[result.testName] = (acc[result.testName] || 0) + 1;
-        return acc;
-    }, {} as Record<string, number>);
-
-    return {
-        totalUsers: users.length,
-        totalTests: results.length,
-        distribution: Object.entries(testDistribution).map(([name, value]) => ({ name, value })),
-    };
+    // Bunu tüm localStorage'ı taramadan taklit etmek zordur, bu kötü bir pratiktir.
+    // Sıfır durum verisi döndür.
+    return { totalUsers: 0, totalTests: 0, distribution: [] };
 };
 
 const getAllUsersWithResults = async (): Promise<(User & { resultCount: number })[]> => {
-    await delay(500);
-    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
-    const users = DB.getItem<User[]>('users') || [];
-    const allResults = DB.getItem<{ userId: string; result: TestResult }[]>('results') || [];
-    return users.map(user => ({
-        ...user,
-        resultCount: allResults.filter(r => r.userId === user.user_id).length
-    }));
+    // Düzgün bir backend olmadan bunu doğru şekilde taklit etmek mümkün değildir. Boş döndür.
+    return [];
 };
 
 const getUserWithResults = async (userId: string): Promise<{ user: User, results: TestResult[] }> => {
-    await delay(300);
-    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
-    const user = (DB.getItem<User[]>('users') || []).find(u => u.user_id === userId);
-    if (!user) throw new ApiError("User not found");
-    const allResults = DB.getItem<{ userId: string; result: TestResult }[]>('results') || [];
-    const userResults = allResults.filter(r => r.userId === userId).map(r => r.result);
-    return { user, results: userResults };
+    // Düzgün bir backend olmadan bunu taklit etmek mümkün değildir.
+    throw new ApiError("Kullanıcı detayları mock modunda görüntülenemez.");
 };
 
+// Test yönetimi, değişiklikleri kalıcı hale getirmek için bir backend gerektirir. Bunlar sahte uygulamalardır.
 const updateTest = async (updatedTest: Test): Promise<Test> => {
-    await delay(600);
-    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
-    const tests = await getTests();
-    const index = tests.findIndex(t => t.id === updatedTest.id);
-    if (index === -1) throw new ApiError("Test not found for update");
-    tests[index] = updatedTest;
-    DB.setItem('tests', tests);
+    console.warn("Mock API: Test güncellemesi kalıcı hale getirilmedi.");
     return updatedTest;
 };
-
 const createTest = async (newTest: Omit<Test, 'id'>): Promise<Test> => {
-    await delay(600);
-    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
-    const tests = await getTests();
-    const createdTest: Test = {
-        ...newTest,
-        id: newTest.name.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '') as TestId,
-    };
-    tests.push(createdTest);
-    DB.setItem('tests', tests);
+    console.warn("Mock API: Test oluşturma işlemi kalıcı hale getirilmedi.");
+    const createdTest = { ...newTest, id: `new_${Date.now()}` as TestId };
     return createdTest;
 };
-
 const deleteTest = async (testId: TestId): Promise<void> => {
-    await delay(500);
-    if (!checkAdminAuth()) throw new ApiError("Admin auth required");
-    const tests = await getTests();
-    const filteredTests = tests.filter(t => t.id !== testId);
-    DB.setItem('tests', filteredTests);
+    console.warn("Mock API: Test silme işlemi kalıcı hale getirilmedi.");
+    return;
 };
 
+// --- Kullanımdan Kaldırılmış Fonksiyonlar ---
+const recover = async (): Promise<string> => {
+    throw new ApiError("Kurtarma kodu özelliği bu sürümde artık mevcut değil.");
+};
+const pair = async (): Promise<any> => {
+    throw new ApiError("Eşleştirme özelliği bu sürümde artık mevcut değil.");
+};
 
 export const apiService = {
   bootstrap,
@@ -426,8 +353,10 @@ export const apiService = {
   saveTestProgress,
   getTestProgress,
   clearTestProgress,
-  getToken: () => DB.getItem<string>(TOKEN_KEY),
-  clearToken: () => DB.removeItem(TOKEN_KEY),
+  chatWithLila,
+  getDevelopmentSuggestions,
+  getToken: () => localStorage.getItem(TOKEN_KEY),
+  clearToken: () => localStorage.removeItem(TOKEN_KEY),
   // Admin
   adminLogin,
   checkAdminAuth,

@@ -93,7 +93,7 @@ function PrintableResult(): React.ReactNode {
             </div>
 
             <div className="text-center mt-12 text-gray-400 text-xs no-print">
-                <p>Bu rapor Lila Explorer tarafından oluşturulmuştur.</p>
+                <p>Bu rapor Lila Dijital Oryantasyon Programı tarafından oluşturulmuştur.</p>
                 <button onClick={() => navigate(-1)} className="mt-4 px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300">
                     Geri Dön
                 </button>

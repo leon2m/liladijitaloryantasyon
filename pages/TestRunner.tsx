@@ -11,13 +11,19 @@ interface TestRunnerProps {
 }
 
 const ProgressBar: React.FC<{ current: number; total: number }> = ({ current, total }) => {
-  const percentage = (current / total) * 100;
+  const percentage = total > 0 ? ((current + 1) / total) * 100 : 0;
   return (
-    <div className="w-full bg-gray-200 rounded-full h-2.5 mb-8">
-      <div
-        className="bg-gradient-to-r from-[#2EA446] to-[#AFD244] h-2.5 rounded-full transition-all duration-500"
-        style={{ width: `${percentage}%` }}
-      ></div>
+    <div className="w-full mb-8">
+        <div className="flex justify-between items-center mb-2">
+            <span className="text-sm font-semibold text-gray-700">{`Soru ${current + 1} / ${total}`}</span>
+            <span className="text-sm font-bold text-[#2EA446]">{Math.round(percentage)}%</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div
+                className="bg-gradient-to-r from-[#2EA446] to-[#AFD244] h-2.5 rounded-full transition-all duration-500"
+                style={{ width: `${percentage}%` }}
+            ></div>
+        </div>
     </div>
   );
 };
@@ -25,13 +31,13 @@ const ProgressBar: React.FC<{ current: number; total: number }> = ({ current, to
 const QuestionDisplay: React.FC<{ question: Question; onAnswer: (answer: QuestionOption) => void; animationKey: number; }> = ({ question, onAnswer, animationKey }) => {
     return (
         <div key={animationKey} className="w-full fade-in">
-            <h3 className="text-2xl font-semibold text-gray-800 mb-8 text-center">{question.text}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 className="text-3xl font-semibold text-gray-800 mb-10 text-center leading-snug">{question.text}</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {question.options.map((option, index) => (
                     <button
                         key={index}
                         onClick={() => onAnswer(option)}
-                        className="p-5 bg-white/50 rounded-2xl border border-gray-200 text-left text-gray-700 hover:bg-green-50 hover:border-green-300 hover:shadow-md transition-all duration-200 transform hover:-translate-y-1"
+                        className="test-option-btn"
                     >
                         {option.text}
                     </button>
@@ -133,9 +139,8 @@ function TestRunner({ test, onTestComplete }: TestRunnerProps): React.ReactNode 
   const currentQuestion = test.questions[currentQuestionIndex];
 
   return (
-    <div className="w-full max-w-3xl p-6 md:p-10 glass-card">
-      <h2 className="text-3xl font-bold mb-2 text-center text-gray-900">{test.name}</h2>
-      <p className="text-center text-gray-500 mb-6">{`Soru ${currentQuestionIndex + 1} / ${test.questions.length}`}</p>
+    <div className="w-full max-w-5xl p-6 md:p-10 glass-card">
+      <h2 className="text-3xl font-bold mb-4 text-center text-gray-900">{test.name}</h2>
       <ProgressBar current={currentQuestionIndex} total={test.questions.length} />
       <QuestionDisplay question={currentQuestion} onAnswer={handleAnswer} animationKey={animationKey} />
     </div>

@@ -1,3 +1,7 @@
+// @DEPRECATED: This component is obsolete and should be deleted.
+// The authentication flow has been updated to a device-token-only system,
+// removing the need for recovery codes. This file is no longer used.
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { apiService } from '../services/apiService';
@@ -22,10 +26,9 @@ function EnterRecoveryCode({ onRecoverySuccess }: EnterRecoveryCodeProps): React
     setError(null);
     setIsLoading(true);
     try {
-      // Step 1: Recover user_id using the code
-      const pairingToken = await apiService.recover(recoveryCode.trim());
-      // Step 2: Pair the new device and get a new device_token
-      const { user } = await apiService.pair(pairingToken);
+      // The old recovery logic is deprecated and will throw an error.
+      await apiService.recover();
+      const { user } = await apiService.pair();
       onRecoverySuccess(user);
     } catch (err) {
       if (err instanceof Error) {

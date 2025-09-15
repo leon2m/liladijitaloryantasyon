@@ -44,7 +44,7 @@ function Sidebar({ user, onLogout, isOpen, onClose }: SidebarProps): React.React
         <div className="glass-card w-full h-full flex flex-col p-6">
             <div className="flex justify-between items-center mb-12">
                 <div className="text-left">
-                    <h1 className="text-2xl font-bold text-gray-900">Lila Oryantasyon</h1>
+                    <h1 className="text-2xl font-bold text-gray-900">Lila Dijital Oryantasyon</h1>
                     <p className="text-sm text-gray-500 mt-1">Kendini Keşfet</p>
                 </div>
                  <button onClick={onClose} className="md:hidden text-gray-500 hover:text-gray-800" aria-label="Menüyü kapat">

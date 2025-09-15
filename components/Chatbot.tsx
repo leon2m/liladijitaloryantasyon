@@ -1,3 +1,8 @@
+// @DEPRECATED: This component is obsolete and should be deleted.
+// The simple keyword-based chatbot has been replaced by the AI-powered
+// chat interface available on the '/chat' page (`pages/Chat.tsx`), which
+// uses the backend's Gemini API integration.
+
 import React, { useState, useRef, useEffect } from 'react';
 
 interface Message {

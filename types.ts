@@ -102,6 +102,7 @@ export interface DataContextType {
     allOrientationSteps: OrientationStep[];
     completedOrientationSteps: string[];
     pastResults: TestResult[];
+    user: User | null;
     isLoading: boolean;
     refreshData: () => Promise<void>;
 }

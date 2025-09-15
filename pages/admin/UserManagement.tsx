@@ -56,7 +56,7 @@ function UserManagement(): React.ReactNode {
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "lila_explorer_sonuclar.csv");
+        link.setAttribute("download", "lila_dijital_oryantasyon_sonuclar.csv");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

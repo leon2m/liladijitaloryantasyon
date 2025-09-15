@@ -6,7 +6,7 @@
         "id": "step_welcome",
         "type": "welcome",
         "title": "Aramıza Hoş Geldin!",
-        "content": "Lila Explorer oryantasyon yolculuğuna hoş geldin! Bu program, şirket kültürümüzü, değerlerimizi ve takım içindeki potansiyelini anlaman için tasarlandı.\n\nHer adımda sana rehberlik edeceğiz. Hazır olduğunda, 'Anladım, Devam Et' butonuna tıklayarak ilk adıma geçebilirsin.",
+        "content": "Lila Dijital Oryantasyon Programı'na hoş geldin! Bu program, şirket kültürümüzü, değerlerimizi ve takım içindeki potansiyelini anlaman için tasarlandı.\n\nHer adımda sana rehberlik edeceğiz. Hazır olduğunda, 'Anladım, Devam Et' butonuna tıklayarak ilk adıma geçebilirsin.",
         "testId": null
       },
       {

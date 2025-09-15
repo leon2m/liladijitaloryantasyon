@@ -1,3 +1,7 @@
+// @DEPRECATED: This component is obsolete and should be deleted.
+// The authentication flow has been updated to a device-token-only system,
+// removing the need for recovery codes. This file is no longer used.
+
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import QRCode from '../components/QRCode';

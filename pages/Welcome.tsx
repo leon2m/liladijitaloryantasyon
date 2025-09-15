@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import { apiService } from '../services/apiService';
+import { User } from '../types';
 
-function Welcome(): React.ReactNode {
+interface WelcomeProps {
+    onLoginSuccess: (user: User) => void;
+}
+
+function Welcome({ onLoginSuccess }: WelcomeProps): React.ReactNode {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [checked, setChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     if (!firstName || !lastName) {
@@ -18,13 +21,13 @@ function Welcome(): React.ReactNode {
     setError(null);
     setIsLoading(true);
     try {
-        const { recovery_code } = await apiService.bootstrap({
+        const response = await apiService.bootstrap({
             first_name: firstName,
             last_name: lastName,
             kvkk_accept: true,
         });
-        // Redirect to a page that shows the recovery code
-        navigate('/show-recovery', { state: { code: recovery_code } });
+        // Yönlendirme yapmak yerine, durumu güncellemesi için ana bileşeni bilgilendir.
+        onLoginSuccess(response.user);
     } catch (err) {
         setError("Bir hata oluştu. Lütfen tekrar deneyin.");
         setIsLoading(false);
@@ -39,7 +42,7 @@ function Welcome(): React.ReactNode {
         </svg>
       </div>
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 text-gray-900">
-        Lila Ddijital Oryantasyon Programına Hoş Geldiniz
+        Lila Dijital Oryantasyon Programı'na Hoş Geldiniz
       </h1>
       <p className="text-base md:text-lg text-gray-600 mb-8 max-w-2xl">
         Kendini keşfetme ve profesyonel gelişim yolculuğunuz burada başlıyor. Başlamak için lütfen bilgilerinizi girip veri gizliliği politikamızı kabul edin.
@@ -92,9 +95,6 @@ function Welcome(): React.ReactNode {
       >
         {isLoading ? 'Hesap Oluşturuluyor...' : 'Yolculuğunuza Başlayın'}
       </button>
-      <Link to="/enter-recovery" className="mt-6 text-[#2EA446] hover:text-[#1e7e34] font-medium transition-colors">
-        Zaten bir kurtarma kodunuz var mı?
-      </Link>
     </div>
   );
 }
