@@ -16,23 +16,18 @@ function AdminLogin({ onLogin }: AdminLoginProps): React.ReactNode {
         setError(null);
         setIsLoading(true);
 
-        // Frontend check for credentials
-        if (username !== 'superadmin' || password !== '123qweasdzxc') {
-            setError("Geçersiz kullanıcı adı veya şifre.");
-            setIsLoading(false);
-            onLogin(false);
-            return;
-        }
-
         try {
+            // The mock apiService now handles credential checking.
             const success = await apiService.adminLogin(username, password);
-            if (!success) {
-                 // Error is displayed via toast from apiService, this is a fallback.
-                 setError("Giriş başarısız oldu. Lütfen tekrar deneyin.");
-            }
             onLogin(success);
+            if (!success) {
+                // The apiService now shows a toast, but we can set a local error too.
+                setError("Geçersiz kullanıcı adı veya şifre.");
+            }
         } catch (err) {
-            // Error toast is handled by apiService
+            // This case might not be reached with the mock, but good practice.
+            setError("Bir hata oluştu.");
+            onLogin(false);
         } finally {
             setIsLoading(false);
         }

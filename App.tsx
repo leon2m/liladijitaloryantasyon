@@ -132,10 +132,12 @@ function AppContent() {
     navigate('/results');
   };
 
-  const handleAdminLogin = async (pass: boolean) => {
-    if (pass) {
+  const handleAdminLogin = (success: boolean) => {
+    if (success) {
         setIsAdmin(true);
         navigate('/admin/dashboard');
+    } else {
+        setIsAdmin(false);
     }
   };
 
