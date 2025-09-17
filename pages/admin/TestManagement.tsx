@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Test, TestId } from '../../types';
 import { apiService } from '../../services/apiService';
+import EmptyState from '../../components/EmptyState';
 
 function TestManagement(): React.ReactNode {
     const [tests, setTests] = useState<Test[]>([]);
@@ -48,32 +49,43 @@ function TestManagement(): React.ReactNode {
                 </button>
             </div>
 
-            <div className="glass-card overflow-hidden">
-                <table className="min-w-full">
-                    <thead className="bg-gray-50/50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Test Adı</th>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Soru Sayısı</th>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white/50 divide-y divide-gray-200/50">
-                        {tests.map(test => (
-                            <tr key={test.id} className="hover:bg-gray-50/30 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                    <div className="text-sm font-semibold text-gray-900">{test.name}</div>
-                                    <div className="text-xs text-gray-500">{test.description.substring(0, 60)}...</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{test.questions.length}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                    <button onClick={() => navigate(`/admin/tests/edit/${test.id}`)} className="btn-secondary !text-xs !py-1 !px-3">Düzenle</button>
-                                    <button onClick={() => handleDelete(test.id)} className="btn-danger !text-xs !py-1 !px-3">Sil</button>
-                                </td>
+            {tests.length > 0 ? (
+                <div className="glass-card overflow-hidden">
+                    <table className="min-w-full">
+                        <thead className="bg-gray-50/50">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Test Adı</th>
+                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Soru Sayısı</th>
+                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">İşlemler</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody className="bg-white/50 divide-y divide-gray-200/50">
+                            {tests.map(test => (
+                                <tr key={test.id} className="hover:bg-gray-50/30 transition-colors">
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <div className="text-sm font-semibold text-gray-900">{test.name}</div>
+                                        <div className="text-xs text-gray-500">{test.description.substring(0, 60)}...</div>
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{test.questions.length}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                                        <button onClick={() => navigate(`/admin/tests/edit/${test.id}`)} className="btn-secondary !text-xs !py-1 !px-3">Düzenle</button>
+                                        <button onClick={() => handleDelete(test.id)} className="btn-danger !text-xs !py-1 !px-3">Sil</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                <EmptyState
+                    title="Henüz Test Oluşturulmamış"
+                    message="Sistemde görüntülenecek bir test bulunmuyor. Başlamak için yeni bir test oluşturun."
+                    action={{
+                        label: "Yeni Test Oluştur",
+                        onClick: () => navigate('/admin/tests/new')
+                    }}
+                />
+            )}
         </div>
     );
 }

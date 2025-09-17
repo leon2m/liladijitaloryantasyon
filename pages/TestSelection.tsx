@@ -176,14 +176,14 @@ function Dashboard({ onTestSelect, onViewResult }: DashboardProps): React.ReactN
 
   return (
     <div className="flex flex-col items-center w-full h-full space-y-12">
-      <div className="text-center w-full">
+      <div className="text-center w-full fade-in-up">
         <h2 className="text-3xl md:text-5xl font-bold mb-3 text-gray-900">Merhaba, {userName}!</h2>
         <p className="text-base md:text-lg text-gray-600 max-w-3xl mx-auto">
              Oryantasyon yolculuğuna devam et, yeni testleri tamamla ve potansiyelini ortaya çıkar.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 w-full fade-in-up" style={{ animationDelay: '100ms' }}>
           <div className="lg:col-span-2">
             <OrientationCard progress={progressPercentage} nextStep={nextStep} totalSteps={allOrientationSteps.length} />
           </div>
@@ -193,7 +193,7 @@ function Dashboard({ onTestSelect, onViewResult }: DashboardProps): React.ReactN
       </div>
 
 
-       <div className="w-full">
+       <div className="w-full fade-in-up" style={{ animationDelay: '200ms' }}>
           <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">Başarıların</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
               <Badge 
@@ -223,7 +223,7 @@ function Dashboard({ onTestSelect, onViewResult }: DashboardProps): React.ReactN
           </div>
        </div>
 
-       <div className="w-full">
+       <div className="w-full fade-in-up" style={{ animationDelay: '300ms' }}>
           <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">Tüm Değerlendirmeler</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 w-full">
             {tests.map((test) => (

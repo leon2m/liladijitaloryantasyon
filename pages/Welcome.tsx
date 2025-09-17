@@ -26,10 +26,9 @@ function Welcome({ onLoginSuccess }: WelcomeProps): React.ReactNode {
             last_name: lastName,
             kvkk_accept: true,
         });
-        // Yönlendirme yapmak yerine, durumu güncellemesi için ana bileşeni bilgilendir.
         onLoginSuccess(response.user);
     } catch (err) {
-        setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+        // Error toast is handled by apiService, just need to stop loading
         setIsLoading(false);
     }
   };
@@ -53,6 +52,7 @@ function Welcome({ onLoginSuccess }: WelcomeProps): React.ReactNode {
             <input 
                 type="text"
                 placeholder="Adınız"
+                aria-label="Adınız"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 className="w-full bg-gray-50/80 border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2EA446]"
@@ -60,12 +60,13 @@ function Welcome({ onLoginSuccess }: WelcomeProps): React.ReactNode {
             <input 
                 type="text"
                 placeholder="Soyadınız"
+                aria-label="Soyadınız"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 className="w-full bg-gray-50/80 border border-gray-300 rounded-lg px-4 py-2.5 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2EA446]"
             />
         </div>
-        {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+        {error && <p className="text-red-500 text-sm mb-4" role="alert">{error}</p>}
       </div>
 
       <div className="text-left bg-gray-100/70 p-5 rounded-xl max-w-xl text-sm text-gray-600 mb-6 border border-gray-200">

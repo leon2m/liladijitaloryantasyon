@@ -43,7 +43,7 @@ The application is powered by a lightweight, local-first backend built with **Fa
 The project is organized into logical directories to promote separation of concerns:
 
 - **/components**: Reusable React components used across multiple pages (e.g., `Sidebar`, `LoadingSkeletons`).
-- **/public/data**: Static JSON files that serve as the content database for the backend.
+- **/public/data**: Static JSON files that serve as the initial content database for tests and orientation.
 - **/pages**: Top-level components that correspond to specific routes/views (e.g., `Welcome`, `TestRunner`, `Results`, `admin/AdminDashboard`).
 - **/services**: Modules responsible for business logic and data fetching (`apiService`, `testService`).
 - **/types.ts**: A central file for all TypeScript type definitions.
@@ -62,7 +62,7 @@ The project is organized into logical directories to promote separation of conce
 The application uses a simple and effective password-less system based on device tokens.
 
 1.  **Bootstrap**: A new user provides their name on the `Welcome` page.
-    - The frontend calls the `/api/bootstrap` endpoint.
+    - The frontend calls the `/api/users/bootstrap` endpoint.
     - The backend generates a new `user_id` and a unique `device_token` (UUID).
     - The backend associates the `device_token` with the new user in its JSON database.
     - The backend responds with the `user` object and the `device_token`.

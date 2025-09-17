@@ -33,16 +33,20 @@ function Chat(): React.ReactNode {
         const currentInput = userInput;
         setUserInput('');
 
-        const botResponseText = await geminiService.sendMessage(currentInput);
-
-        const botMessage: ChatMessage = { text: botResponseText, sender: 'bot' };
-        setMessages(prev => {
-            const newMessages = [...prev];
-            // Replace the loading indicator message with the actual response
-            newMessages[newMessages.length - 1] = botMessage; 
-            return newMessages;
-        });
-        setIsLoading(false);
+        try {
+            const botResponseText = await geminiService.sendMessage(currentInput);
+            const botMessage: ChatMessage = { text: botResponseText, sender: 'bot' };
+            setMessages(prev => {
+                const newMessages = [...prev];
+                newMessages[newMessages.length - 1] = botMessage; 
+                return newMessages;
+            });
+        } catch (error) {
+            // Error is handled by apiService toast, but we need to remove the loading indicator here.
+             setMessages(prev => prev.filter(msg => !msg.isLoading));
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -57,7 +61,7 @@ function Chat(): React.ReactNode {
                 <h2 className="text-2xl font-bold text-center text-gray-900">Lila Rehber</h2>
                 <p className="text-center text-gray-500 text-sm">Yapay Zeka Destekli Yardımcınız</p>
             </div>
-            <div className="flex-1 p-6 overflow-y-auto">
+            <div className="flex-1 p-6 overflow-y-auto" aria-live="polite" aria-atomic="false">
                 <div className="space-y-6">
                     {messages.map((msg, index) => (
                     <div key={index} className={`flex items-end gap-3 ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
@@ -83,7 +87,7 @@ function Chat(): React.ReactNode {
                 aria-label="Mesajınız"
                 disabled={isLoading}
                 />
-                <button onClick={handleSend} disabled={isLoading || !userInput.trim()} className="ml-4 p-3 text-white bg-gradient-to-br from-[#2EA446] to-[#AFD244] rounded-full hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 transform hover:scale-110">
+                <button onClick={handleSend} disabled={isLoading || !userInput.trim()} className="ml-4 p-3 text-white bg-gradient-to-br from-[#2EA446] to-[#AFD244] rounded-full hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100 transform hover:scale-110" aria-label="Mesajı gönder">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
                     </svg>

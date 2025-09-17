@@ -7,6 +7,7 @@ This file lists the features and functionalities that have been successfully imp
 - [x] **RESTful API Integration**: Frontend services (`apiService`) now communicate with live backend endpoints.
 - [x] **Dual Authentication Model**: Implemented frontend logic to handle both user device tokens (`X-Device-Token`) and admin JWTs (`Authorization: Bearer`).
 - [x] **Backend-Powered AI Chat**: The chat interface now routes messages through a secure backend endpoint instead of a client-side library.
+- [x] **Centralized Data**: All user and result data is now stored centrally on the backend, accessible from any device.
 
 ## Admin Panel
 - [x] **Admin Authentication**: Created a secure login page for administrators (`/admin/login`).
@@ -15,6 +16,7 @@ This file lists the features and functionalities that have been successfully imp
 - [x] **User Management**: Admins can view a list of all users and their completed test counts.
 - [x] **User Results Viewer**: Admins can drill down to see the specific test results for any user.
 - [x] **Test Management**: A complete CRUD interface for managing tests, including a form-based editor for questions, options, and scoring profiles.
+- [x] **CSV Export**: Admins can export all user test results to a single CSV file for reporting.
 
 ## Core Application & UI
 

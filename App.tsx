@@ -11,6 +11,7 @@ import Sidebar from './components/Sidebar';
 import { Test, TestResult, User } from './types';
 import { apiService } from './services/apiService';
 import { DataProvider, useData } from './context/DataContext';
+import ToastContainer from './components/ToastContainer';
 
 // Admin imports
 import AdminLogin from './pages/admin/AdminLogin';
@@ -157,58 +158,61 @@ function AppContent() {
   }
 
   return (
-      <Routes>
-          {/* Public Routes */}
-          <Route path="/admin/login" element={<AdminLogin onLogin={handleAdminLogin} />} />
-          <Route path="/results/print" element={<PrintableResult />} />
-          
-          {/* Admin Protected Routes */}
-          <Route 
-            path="/admin/*" 
-            element={
-              <AdminProtectedRoute isAdmin={isAdmin}>
-                <Routes>
-                   <Route element={<AdminLayout onLogout={handleAdminLogout} />}>
-                      <Route path="dashboard" element={<AdminDashboard />} />
-                      <Route path="tests" element={<TestManagement />} />
-                      <Route path="tests/edit/:testId" element={<TestEditor />} />
-                      <Route path="tests/new" element={<TestEditor />} />
-                      <Route path="users" element={<UserManagement />} />
-                      <Route path="users/:userId" element={<UserResults />} />
-                      <Route index element={<Navigate to="dashboard" replace />} />
-                      <Route path="*" element={<Navigate to="dashboard" />} />
-                   </Route>
-                </Routes>
-              </AdminProtectedRoute>
-            }
-          />
-
-          {/* User Routes */}
-          {user ? (
-             <Route path="/*" element={<AppLayout onLogout={handleLogout} />}>
-                <Route path="select" element={<Dashboard onTestSelect={setSelectedTest} onViewResult={handleViewResult} />} />
-                <Route path="orientation" element={<Orientation onTestSelect={setSelectedTest} />} />
-                <Route path="test" element={selectedTest ? <TestRunner test={selectedTest} onTestComplete={setTestResult} /> : <Navigate to="/select" />} />
-                <Route path="results" element={testResult ? <Results result={testResult} /> : <Navigate to="/select" />} />
-                <Route path="history" element={<History onViewResult={handleViewResult} />} />
-                <Route path="chat" element={<Chat />} />
-                <Route index element={<Navigate to="/select" replace />} />
-                <Route path="*" element={<Navigate to="/select" />} />
-             </Route>
-          ) : (
-            <Route
-              path="*"
-              element={
-                <div className="w-full flex items-center justify-center p-4 selection:bg-[#AFD244] selection:text-gray-800">
+      <>
+        <ToastContainer />
+        <Routes>
+            {/* Public Routes */}
+            <Route path="/admin/login" element={<AdminLogin onLogin={handleAdminLogin} />} />
+            <Route path="/results/print" element={<PrintableResult />} />
+            
+            {/* Admin Protected Routes */}
+            <Route 
+                path="/admin/*" 
+                element={
+                <AdminProtectedRoute isAdmin={isAdmin}>
                     <Routes>
-                         <Route path="/" element={<Welcome onLoginSuccess={handleLoginSuccess} />} />
-                         <Route path="*" element={<Navigate to="/" replace />} />
+                    <Route element={<AdminLayout onLogout={handleAdminLogout} />}>
+                        <Route path="dashboard" element={<AdminDashboard />} />
+                        <Route path="tests" element={<TestManagement />} />
+                        <Route path="tests/edit/:testId" element={<TestEditor />} />
+                        <Route path="tests/new" element={<TestEditor />} />
+                        <Route path="users" element={<UserManagement />} />
+                        <Route path="users/:userId" element={<UserResults />} />
+                        <Route index element={<Navigate to="dashboard" replace />} />
+                        <Route path="*" element={<Navigate to="dashboard" />} />
+                    </Route>
                     </Routes>
-                </div>
-              }
+                </AdminProtectedRoute>
+                }
             />
-          )}
-      </Routes>
+
+            {/* User Routes */}
+            {user ? (
+                <Route path="/*" element={<AppLayout onLogout={handleLogout} />}>
+                    <Route path="select" element={<Dashboard onTestSelect={setSelectedTest} onViewResult={handleViewResult} />} />
+                    <Route path="orientation" element={<Orientation onTestSelect={setSelectedTest} />} />
+                    <Route path="test" element={selectedTest ? <TestRunner test={selectedTest} onTestComplete={setTestResult} /> : <Navigate to="/select" />} />
+                    <Route path="results" element={testResult ? <Results result={testResult} /> : <Navigate to="/select" />} />
+                    <Route path="history" element={<History onViewResult={handleViewResult} />} />
+                    <Route path="chat" element={<Chat />} />
+                    <Route index element={<Navigate to="/select" replace />} />
+                    <Route path="*" element={<Navigate to="/select" />} />
+                </Route>
+            ) : (
+                <Route
+                path="*"
+                element={
+                    <div className="w-full flex items-center justify-center p-4 selection:bg-[#AFD244] selection:text-gray-800">
+                        <Routes>
+                            <Route path="/" element={<Welcome onLoginSuccess={handleLoginSuccess} />} />
+                            <Route path="*" element={<Navigate to="/" replace />} />
+                        </Routes>
+                    </div>
+                }
+                />
+            )}
+        </Routes>
+      </>
   );
 }
 

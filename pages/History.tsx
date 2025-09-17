@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TestResult, TestId } from '../types';
 import { useData } from '../context/DataContext';
+import EmptyState from '../components/EmptyState';
 
 interface HistoryProps {
     onViewResult: (result: TestResult) => void;
@@ -51,15 +52,21 @@ function History({ onViewResult }: HistoryProps): React.ReactNode {
     
     if (sortedResults.length === 0) {
         return (
-             <div className="flex flex-col items-center justify-center text-center p-6 md:p-12 glass-card">
-                <h1 className="text-2xl md:text-3xl font-bold mb-3 text-gray-800">Sonuç Arşiviniz Henüz Boş</h1>
-                <p className="text-gray-600 mb-8 max-w-lg">
-                    Geçmiş test sonuçlarınız burada görünecektir. Kendinizi keşfetmeye başlamak için ilk testinizi çözün!
-                </p>
-                <button onClick={() => navigate('/select')} className="btn-primary">
-                    İlk Testine Başla
-                </button>
-            </div>
+             <EmptyState
+                title="Sonuç Arşiviniz Henüz Boş"
+                message="Geçmiş test sonuçlarınız burada görünecektir. Kendinizi keşfetmeye başlamak için ilk testinizi çözün!"
+                action={{
+                    label: "İlk Testine Başla",
+                    onClick: () => navigate('/select')
+                }}
+                illustration={
+                    <div className="mx-auto h-24 w-24 text-gray-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-full h-full">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                        </svg>
+                    </div>
+                }
+            />
         );
     }
 
@@ -76,7 +83,7 @@ function History({ onViewResult }: HistoryProps): React.ReactNode {
                 {sortedResults.map((result, index) => {
                     const dominantTrait = result.scores[0];
                     return (
-                        <div key={index} className="glass-card p-6 flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5">
+                        <div key={index} className="glass-card p-6 flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 fade-in-up" style={{ animationDelay: `${index * 100}ms`}}>
                             <div className="mb-4">
                                 <h3 className="text-2xl font-bold text-gray-800">{result.testName}</h3>
                                 <p className="text-sm text-gray-500 mt-1">

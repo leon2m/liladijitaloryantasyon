@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { apiService } from '../../services/apiService';
 import { User, TestResult } from '../../types';
+import EmptyState from '../../components/EmptyState';
 
 type UserWithCount = User & { resultCount: number };
 
@@ -75,35 +76,42 @@ function UserManagement(): React.ReactNode {
         <div className="fade-in">
              <div className="flex justify-between items-center mb-8">
                 <h1 className="text-4xl font-bold text-gray-800">Kullanıcı Yönetimi</h1>
-                <button onClick={exportToCSV} className="btn-primary">
+                <button onClick={exportToCSV} className="btn-primary" disabled={users.length === 0}>
                     Tüm Sonuçları CSV İndir
                 </button>
             </div>
 
-            <div className="glass-card overflow-hidden">
-                <table className="min-w-full">
-                    <thead className="bg-gray-50/50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Ad Soyad</th>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Kullanıcı ID</th>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tamamlanan Test</th>
-                            <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white/50 divide-y divide-gray-200/50">
-                        {users.map(user => (
-                            <tr key={user.user_id} className="hover:bg-gray-50/30 transition-colors">
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{user.first_name} {user.last_name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">{user.user_id}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.resultCount}</td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button onClick={() => navigate(`/admin/users/${user.user_id}`)} className="btn-secondary !text-xs !py-1 !px-3">Sonuçları Görüntüle</button>
-                                </td>
+            {users.length > 0 ? (
+                <div className="glass-card overflow-hidden">
+                    <table className="min-w-full">
+                        <thead className="bg-gray-50/50">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Ad Soyad</th>
+                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Kullanıcı ID</th>
+                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">Tamamlanan Test</th>
+                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase tracking-wider">İşlemler</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody className="bg-white/50 divide-y divide-gray-200/50">
+                            {users.map(user => (
+                                <tr key={user.user_id} className="hover:bg-gray-50/30 transition-colors">
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">{user.first_name} {user.last_name}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">{user.user_id}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.resultCount}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <button onClick={() => navigate(`/admin/users/${user.user_id}`)} className="btn-secondary !text-xs !py-1 !px-3">Sonuçları Görüntüle</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            ) : (
+                 <EmptyState
+                    title="Kullanıcı Bulunamadı"
+                    message="Sistemde henüz kayıtlı bir kullanıcı bulunmuyor. İlk kullanıcı kaydolduğunda burada listelenecektir."
+                />
+            )}
         </div>
     );
 }

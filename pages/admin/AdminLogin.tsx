@@ -15,11 +15,24 @@ function AdminLogin({ onLogin }: AdminLoginProps): React.ReactNode {
         e.preventDefault();
         setError(null);
         setIsLoading(true);
+
+        // Frontend check for credentials
+        if (username !== 'superadmin' || password !== '123qweasdzxc') {
+            setError("Geçersiz kullanıcı adı veya şifre.");
+            setIsLoading(false);
+            onLogin(false);
+            return;
+        }
+
         try {
             const success = await apiService.adminLogin(username, password);
+            if (!success) {
+                 // Error is displayed via toast from apiService, this is a fallback.
+                 setError("Giriş başarısız oldu. Lütfen tekrar deneyin.");
+            }
             onLogin(success);
         } catch (err) {
-            setError("Geçersiz kullanıcı adı veya şifre.");
+            // Error toast is handled by apiService
         } finally {
             setIsLoading(false);
         }
@@ -36,6 +49,7 @@ function AdminLogin({ onLogin }: AdminLoginProps): React.ReactNode {
                         <input
                             type="text"
                             placeholder="Kullanıcı Adı"
+                            aria-label="Kullanıcı Adı"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
                             className="w-full bg-gray-50/80 border border-gray-300 rounded-lg px-4 py-3 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2EA446]"
@@ -43,13 +57,14 @@ function AdminLogin({ onLogin }: AdminLoginProps): React.ReactNode {
                         <input
                             type="password"
                             placeholder="Şifre"
+                            aria-label="Şifre"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full bg-gray-50/80 border border-gray-300 rounded-lg px-4 py-3 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#2EA446]"
                         />
                     </div>
                     
-                    {error && <p className="text-red-500 text-sm mt-4 text-center">{error}</p>}
+                    {error && <p className="text-red-500 text-sm mt-4 text-center" role="alert">{error}</p>}
 
                     <button
                         type="submit"
