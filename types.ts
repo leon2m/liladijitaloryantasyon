@@ -24,7 +24,7 @@ export interface Question {
 }
 
 export interface ResultProfile {
-    name:string;
+    name: string;
     color: string;
     description: string;
 }
@@ -112,12 +112,4 @@ export interface ChatMessage {
   text: string;
   sender: 'user' | 'bot';
   isLoading?: boolean;
-}
-
-// Fix: Add AdminDashboardStats type for admin dashboard data.
-// Type for Admin Dashboard Stats
-export interface AdminDashboardStats {
-    totalUsers: number;
-    totalTests: number;
-    distribution: { name: string; value: number }[];
 }

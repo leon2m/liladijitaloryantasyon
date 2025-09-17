@@ -5,15 +5,15 @@
     "description": "Doğal takım rollerinizi ve grup başarısına nasıl katkıda bulunduğunuzu keşfedin. Bu test, bir takımda tercih ettiğiniz çalışma biçimlerini belirler.",
     "duration": "Yaklaşık 12-15 Dakika",
     "resultProfiles": {
-      "shaper": {"name": "Şekillendirici", "description": "Takımı gelişmeye teşvik eder.", "color": "#e53935"},
-      "implementer": {"name": "Uygulayıcı", "description": "Fikirleri eyleme dönüştürür.", "color": "#1e88e5"},
-      "completer_finisher": {"name": "Bütünleyici-Bitirici", "description": "Projelerin eksizsiz tamamlanmasını sağlar.", "color": "#43a047"},
-      "coordinator": {"name": "Koordinatör", "description": "Ekip lideri gibi davranır.", "color": "#f9a825"},
-      "teamworker": {"name": "Takım Çalışanı", "description": "İş birliğini teşvik eder.", "color": "#3949ab"},
-      "resource_investigator": {"name": "Kaynak Araştırmacısı", "description": "Dış fırsatları araştırır.", "color": "#fb8c00"},
-      "plant": {"name": "Yaratıcı", "description": "Yeni fikirler ve yaklaşımlar sunar.", "color": "#8e24aa"},
-      "monitor_evaluator": {"name": "Gözlemci-Değerlendirici", "description": "Seçenekleri analiz eder.", "color": "#00897b"},
-      "specialist": {"name": "Uzman", "description": "Uzmanlık becerileri sağlar.", "color": "#546e7a"}
+      "shaper": {"name": "Şekillendirici", "description": "Takımı gelişmeye teşvik eder.", "color": "#AFD244"},
+      "implementer": {"name": "Uygulayıcı", "description": "Fikirleri eyleme dönüştürür.", "color": "#2EA446"},
+      "completer_finisher": {"name": "Bütünleyici-Bitirici", "description": "Projelerin eksizsiz tamamlanmasını sağlar.", "color": "#6a994e"},
+      "coordinator": {"name": "Koordinatör", "description": "Ekip lideri gibi davranır.", "color": "#a7c957"},
+      "teamworker": {"name": "Takım Çalışanı", "description": "İş birliğini teşvik eder.", "color": "#84a98c"},
+      "resource_investigator": {"name": "Kaynak Araştırmacısı", "description": "Dış fırsatları araştırır.", "color": "#cad2c5"},
+      "plant": {"name": "Yaratıcı", "description": "Yeni fikirler ve yaklaşımlar sunar.", "color": "#bc4749"},
+      "monitor_evaluator": {"name": "Gözlemci-Değerlendirici", "description": "Seçenekleri analiz eder.", "color": "#52796f"},
+      "specialist": {"name": "Uzman", "description": "Uzmanlık becerileri sağlar.", "color": "#f2e8cf"}
     },
     "questions": [
       {
@@ -65,6 +65,356 @@
           {"text": "Karmaşık bir soruna alışılmadık bir çözüm bulduğum an.", "scores": {"plant": 10}},
           {"text": "Belirli bir alandaki uzmanlığımı kullanabildiğim an.", "scores": {"specialist": 10}}
         ]
+      },
+      {
+        "id": "b6",
+        "text": "Ekip arkadaşlarıma yaklaşımım genellikle...",
+        "options": [
+          {"text": "Diplomatik ve işbirlikçidir.", "scores": {"teamworker": 10, "coordinator": 5}},
+          {"text": "Meraklı ve dışa dönüktür, yeni temaslar kurmayı severim.", "scores": {"resource_investigator": 10}},
+          {"text": "Tarafsız ve objektiftir.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Doğrudan ve sonuç odaklıdır.", "scores": {"shaper": 10}}
+        ]
+      },
+      {
+        "id": "b7",
+        "text": "Bir projenin planlama aşamasında...",
+        "options": [
+          {"text": "Stratejiyi oluşturur ve görevleri dağıtırım.", "scores": {"coordinator": 10}},
+          {"text": "Planı pratik ve uygulanabilir adımlara bölerim.", "scores": {"implementer": 10}},
+          {"text": "Plandaki potansiyel kusurları ve zayıflıkları ararım.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Gerekli bilgi ve uzmanlığı sağlamaya odaklanırım.", "scores": {"specialist": 10}}
+        ]
+      },
+      {
+        "id": "b8",
+        "text": "Yeni fikirlere tepkim...",
+        "options": [
+          {"text": "Genellikle ilk benim aklıma gelir.", "scores": {"plant": 10}},
+          {"text": "Onları geliştirmek ve potansiyellerini keşfetmek için heyecanlanırım.", "scores": {"resource_investigator": 10}},
+          {"text": "Uygulanabilir olup olmadıklarını dikkatlice değerlendiririm.", "scores": {"implementer": 5, "monitor_evaluator": 5}},
+          {"text": "Fikrin arkasındaki mantığı ve amacı anlamak isterim.", "scores": {"monitor_evaluator": 10}}
+        ]
+      },
+      {
+        "id": "b9",
+        "text": "İşimi yaparken beni en çok motive eden şey...",
+        "options": [
+          {"text": "Yüksek standartlarda bir iş teslim etmek.", "scores": {"completer_finisher": 10, "specialist": 5}},
+          {"text": "Bir hedefe ulaşmak için engelleri aşmak.", "scores": {"shaper": 10}},
+          {"text": "Uyumlu ve pozitif bir çalışma ortamı.", "scores": {"teamworker": 10}},
+          {"text": "Zorlu entelektüel problemlerle uğraşmak.", "scores": {"plant": 5, "monitor_evaluator": 5}}
+        ]
+      },
+      {
+        "id": "b10",
+        "text": "Takım çalışmasında en az keyif aldığım şey...",
+        "options": [
+          {"text": "İlerlemeyi engelleyen belirsizlik ve verimsizlik.", "scores": {"implementer": 10, "shaper": 5}},
+          {"text": "İhmal edilmiş detaylar ve baştan savma işler.", "scores": {"completer_finisher": 10}},
+          {"text": "Kişilerarası çatışma ve gerginlik.", "scores": {"teamworker": 10}},
+          {"text": "Yaratıcılığımı ve özgünlüğümü kullanamamak.", "scores": {"plant": 10}}
+        ]
+      },
+      {
+        "id": "b11",
+        "text": "Bir proje krize girdiğinde, ilk tepkim...",
+        "options": [
+          {"text": "Durumu kontrol altına almak ve acil kararlar vermek.", "scores": {"shaper": 10}},
+          {"text": "Sakin kalıp, sorunun temel nedenini analiz etmek.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Ekip üyelerinin moralini düzeltmek ve destek olmak.", "scores": {"teamworker": 10}},
+          {"text": "Bu durumdan çıkış için yaratıcı, alışılmadık bir yol aramak.", "scores": {"plant": 10}}
+        ]
+      },
+      {
+        "id": "b12",
+        "text": "İnsanlar beni genellikle şöyle tanımlar:",
+        "options": [
+          {"text": "Organize ve güvenilir.", "scores": {"implementer": 10}},
+          {"text": "Sorgulayıcı ve stratejik.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Girişken ve hevesli.", "scores": {"resource_investigator": 10}},
+          {"text": "Odaklı ve bilgili.", "scores": {"specialist": 10}}
+        ]
+      },
+      {
+        "id": "b13",
+        "text": "Bir beyin fırtınası seansında en çok keyif aldığım kısım...",
+        "options": [
+          {"text": "Fikirleri bir araya getirip bir bütün oluşturmak.", "scores": {"coordinator": 10}},
+          {"text": "Fikirlerin pratik olarak nasıl uygulanacağını düşünmek.", "scores": {"implementer": 10}},
+          {"text": "Olabildiğince çok sayıda ve çeşitli fikir üretmek.", "scores": {"plant": 10, "resource_investigator": 5}},
+          {"text": "Her fikrin artılarını ve eksilerini değerlendirmek.", "scores": {"monitor_evaluator": 10}}
+        ]
+      },
+      {
+        "id": "b14",
+        "text": "Bir görevde zorlandığımda...",
+        "options": [
+          {"text": "Konuyla ilgili derinlemesine bilgi edinmek için zaman ayırırım.", "scores": {"specialist": 10}},
+          {"text": "Yardım veya tavsiye almak için başkalarına danışırım.", "scores": {"teamworker": 10, "resource_investigator": 5}},
+          {"text": "Görevi tamamlamak için kendimi daha fazla zorlarım.", "scores": {"shaper": 10}},
+          {"text": "Görevi bitirene kadar titizlikle ve dikkatle çalışırım.", "scores": {"completer_finisher": 10}}
+        ]
+      },
+      {
+        "id": "b15",
+        "text": "Bir ekibin parçası olarak, en büyük gücüm...",
+        "options": [
+          {"text": "Farklı yeteneklere sahip insanları bir araya getirip hedefe yönlendirmek.", "scores": {"coordinator": 10}},
+          {"text": "İşlerin zamanında ve standartlara uygun yapılmasını sağlamak.", "scores": {"completer_finisher": 10}},
+          {"text": "Karmaşık konuları basitleştirmek ve açıklığa kavuşturmak.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Ekip dışında faydalı olabilecek kişiler ve kaynaklar bulmak.", "scores": {"resource_investigator": 10}}
+        ]
+      },
+      {
+        "id": "b16",
+        "text": "Yeni bir teknoloji veya sistem öğrenmem gerektiğinde...",
+        "options": [
+          {"text": "Onu hemen kullanmaya başlar ve yaparak öğrenirim.", "scores": {"implementer": 10}},
+          {"text": "Faydalarını ve potansiyel kullanım alanlarını araştırırım.", "scores": {"resource_investigator": 10}},
+          {"text": "Mantığını ve nasıl çalıştığını anlamaya odaklanırım.", "scores": {"monitor_evaluator": 10, "specialist": 5}},
+          {"text": "Onunla neler yapabileceğime dair yaratıcı fikirler geliştiririm.", "scores": {"plant": 10}}
+        ]
+      },
+      {
+        "id": "b17",
+        "text": "Bir toplantıda, eğer tartışma konudan saparsa...",
+        "options": [
+          {"text": "Grubu nazikçe ana gündem maddesine geri yönlendiririm.", "scores": {"coordinator": 10}},
+          {"text": "Tartışmayı sonlandırmak için baskı yaparım ve eyleme geçilmesini isterim.", "scores": {"shaper": 10}},
+          {"text": "Yeni konunun ilginç olup olmadığını görmek için dinlemeye devam ederim.", "scores": {"resource_investigator": 10}},
+          {"text": "Herkesin fikrini söylemesine izin vererek uyumu korumaya çalışırım.", "scores": {"teamworker": 10}}
+        ]
+      },
+      {
+        "id": "b18",
+        "text": "Bir projenin son aşamalarında...",
+        "options": [
+          {"text": "Tüm küçük hataları ve eksiklikleri bulmak için detaylı kontrol yaparım.", "scores": {"completer_finisher": 10}},
+          {"text": "Son teslim tarihine yetişmek için ekibi motive ederim.", "scores": {"shaper": 10}},
+          {"text": "Projenin hedeflerine ulaşıp ulaşmadığını objektif bir şekilde değerlendiririm.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Yapılan işi organize edip son raporu hazırlarım.", "scores": {"implementer": 10, "coordinator": 5}}
+        ]
+      },
+      {
+        "id": "b19",
+        "text": "İş yerinde en çok keyif aldığım şey...",
+        "options": [
+          {"text": "Zorlu bir problemi çözmek.", "scores": {"plant": 10}},
+          {"text": "İyi bir ekip atmosferi yaratmak.", "scores": {"teamworker": 10}},
+          {"text": "Etkili sistemler ve süreçler oluşturmak.", "scores": {"implementer": 10}},
+          {"text": "Belirli bir konuda uzmanlığımı derinleştirmek.", "scores": {"specialist": 10}}
+        ]
+      },
+      {
+        "id": "b20",
+        "text": "Başkalarının benim hakkımda eleştirebileceği bir konu...",
+        "options": [
+          {"text": "Bazen fazla zorlayıcı ve sabırsız olabilmem.", "scores": {"shaper": 10}},
+          {"text": "Detaylara takılıp kalmam.", "scores": {"completer_finisher": 10}},
+          {"text": "Değişime karşı dirençli olabilmem.", "scores": {"implementer": 10}},
+          {"text": "Pratik olmayan fikirler üretebilmem.", "scores": {"plant": 10}}
+        ]
+      },
+      {
+        "id": "b21",
+        "text": "Bir ekip lideri seçmem gerekse, hangi özelliğe öncelik veririm?",
+        "options": [
+          {"text": "Herkesin katkısını teşvik eden ve dinleyen biri.", "scores": {"coordinator": 10}},
+          {"text": "Net bir vizyonu olan ve ilham veren biri.", "scores": {"plant": 10, "shaper": 5}},
+          {"text": "Adil ve mantıklı kararlar veren biri.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Destekleyici ve ekip üyeleriyle iyi ilişkiler kuran biri.", "scores": {"teamworker": 10}}
+        ]
+      },
+      {
+        "id": "b22",
+        "text": "Bir görevin tanımı belirsiz olduğunda...",
+        "options": [
+          {"text": "Netleştirmek için sorular sorar ve bir yapı oluştururum.", "scores": {"implementer": 10}},
+          {"text": "Bu belirsizliği yeni şeyler denemek için bir fırsat olarak görürüm.", "scores": {"plant": 10, "resource_investigator": 5}},
+          {"text": "En mantıklı yaklaşımın ne olacağını analiz ederim.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Ekiple konuşarak ortak bir anlayışa varmaya çalışırım.", "scores": {"coordinator": 10, "teamworker": 5}}
+        ]
+      },
+      {
+        "id": "b23",
+        "text": "Bir proje hakkında geri bildirim verirken...",
+        "options": [
+          {"text": "Yapıcı ve diplomatik olmaya özen gösteririm.", "scores": {"teamworker": 10}},
+          {"text": "Objektif verilere ve mantığa dayalı eleştiriler sunarım.", "scores": {"monitor_evaluator": 10}},
+          {"text": "İyileştirilmesi gereken alanları doğrudan ve net bir şekilde belirtirim.", "scores": {"shaper": 10}},
+          {"text": "Son ürünün kalitesini artıracak detaylara odaklanırım.", "scores": {"completer_finisher": 10}}
+        ]
+      },
+      {
+        "id": "b24",
+        "text": "İşimi yaparken en önemli şey benim için...",
+        "options": [
+          {"text": "İşin doğru ve eksiksiz yapılması.", "scores": {"completer_finisher": 10}},
+          {"text": "Ekip olarak birlikte başarmak.", "scores": {"coordinator": 10, "teamworker": 5}},
+          {"text": "Yeni ve heyecan verici fırsatlar bulmak.", "scores": {"resource_investigator": 10}},
+          {"text": "Teknik bilgimi ve becerilerimi kullanmak.", "scores": {"specialist": 10}}
+        ]
+      },
+      {
+        "id": "b25",
+        "text": "Bir ekibe yeni katıldığımda...",
+        "options": [
+          {"text": "Hemen insanlarla tanışır ve ilişkiler kurarım.", "scores": {"resource_investigator": 10, "teamworker": 5}},
+          {"text": "Ekip dinamiklerini ve süreçleri anlamak için gözlem yaparım.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Bana verilen görevleri verimli bir şekilde yapmaya odaklanırım.", "scores": {"implementer": 10}},
+          {"text": "Ekibe nasıl katkıda bulunabileceğime dair fikirlerimi paylaşırım.", "scores": {"shaper": 10, "plant": 5}}
+        ]
+      },
+      {
+        "id": "b26",
+        "text": "Rutin ve tekrarlayan görevler hakkında ne düşünüyorum?",
+        "options": [
+          {"text": "Bunları verimli bir şekilde tamamlamak için sistemler kurarım.", "scores": {"implementer": 10}},
+          {"text": "Bunlardan sıkılırım ve yeni zorluklar ararım.", "scores": {"shaper": 10, "resource_investigator": 5}},
+          {"text": "Kaliteyi sağlamak için bu görevlerin dikkatle yapılması gerektiğini düşünürüm.", "scores": {"completer_finisher": 10}},
+          {"text": "Eğer ekibin hedefine hizmet ediyorsa, yapmaktan gocunmam.", "scores": {"teamworker": 10}}
+        ]
+      },
+      {
+        "id": "b27",
+        "text": "Bir projenin başarılı olması için en kritik faktör nedir?",
+        "options": [
+          {"text": "Net ve iyi düşünülmüş bir strateji.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Özgün ve yenilikçi bir fikir.", "scores": {"plant": 10}},
+          {"text": "Güçlü bir ekip ruhu ve iş birliği.", "scores": {"teamworker": 10, "coordinator": 5}},
+          {"text": "Disiplinli bir uygulama ve planı takip etme.", "scores": {"implementer": 10}}
+        ]
+      },
+      {
+        "id": "b28",
+        "text": "Bilgi toplarken, tercih ettiğim yöntem...",
+        "options": [
+          {"text": "Konunun uzmanlarıyla konuşmak ve ağımı kullanmak.", "scores": {"resource_investigator": 10}},
+          {"text": "Farklı kaynaklardan gelen verileri dikkatlice analiz etmek.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Belirli bir alanda derinlemesine araştırma yapmak.", "scores": {"specialist": 10}},
+          {"text": "Fikirleri birleştirmek ve yeni konseptler oluşturmak.", "scores": {"plant": 10}}
+        ]
+      },
+      {
+        "id": "b29",
+        "text": "Takım arkadaşlarımdan beklentim...",
+        "options": [
+          {"text": "Sorumluluklarını zamanında yerine getirmeleri.", "scores": {"implementer": 10, "completer_finisher": 5}},
+          {"text": "Açık fikirli olmaları ve yapıcı tartışmalara katılmaları.", "scores": {"coordinator": 10}},
+          {"text": "Destekleyici ve güvenilir olmaları.", "scores": {"teamworker": 10}},
+          {"text": "Sonuç odaklı olmaları ve zorluklardan yılmamaları.", "scores": {"shaper": 10}}
+        ]
+      },
+      {
+        "id": "b30",
+        "text": "Bir sunum hazırlarken, en çok neye odaklanırım?",
+        "options": [
+          {"text": "Mesajın net ve mantıksal bir akış içinde olmasına.", "scores": {"monitor_evaluator": 10}},
+          {"text": "İzleyicinin dikkatini çekecek özgün ve yaratıcı unsurlara.", "scores": {"plant": 10}},
+          {"text": "Sunumun tüm detaylarının doğru ve hatasız olmasına.", "scores": {"completer_finisher": 10}},
+          {"text": "Sunumun ikna edici ve harekete geçirici olmasına.", "scores": {"shaper": 10}}
+        ]
+      },
+      {
+        "id": "b31",
+        "text": "Karar alırken en zorlandığım konu...",
+        "options": [
+          {"text": "Tüm seçenekleri analiz etmeden hızlı karar vermek.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Birini incitebilecek veya çatışma yaratabilecek bir karar vermek.", "scores": {"teamworker": 10}},
+          {"text": "Çok fazla ilginç olasılık arasında seçim yapmak.", "scores": {"resource_investigator": 10}},
+          {"text": "Küçük detayların mükemmel olmasını sağlamak için zaman harcamak.", "scores": {"completer_finisher": 10}}
+        ]
+      },
+      {
+        "id": "b32",
+        "text": "Bir projede fikir ayrılığı olduğunda...",
+        "options": [
+          {"text": "Orta yolu bulmaya ve herkesin anlaştığı bir çözüm aramaya çalışırım.", "scores": {"teamworker": 10, "coordinator": 5}},
+          {"text": "Kendi argümanımı verilerle destekleyerek savunurum.", "scores": {"monitor_evaluator": 10, "specialist": 5}},
+          {"text": "Tartışmayı bir sonuca bağlamak ve ilerlemek için baskı yaparım.", "scores": {"shaper": 10}},
+          {"text": "Bu durumu tamamen yeni bir perspektif sunmak için kullanırım.", "scores": {"plant": 10}}
+        ]
+      },
+      {
+        "id": "b33",
+        "text": "Bir işi 'bitmiş' olarak kabul etmem için...",
+        "options": [
+          {"text": "Tüm gereksinimlerin karşılanması ve her detayın kontrol edilmesi gerekir.", "scores": {"completer_finisher": 10}},
+          {"text": "Planlanan programa ve bütçeye uygun olarak tamamlanması gerekir.", "scores": {"implementer": 10}},
+          {"text": "Ekibin ortak onayı ve memnuniyeti gerekir.", "scores": {"coordinator": 10}},
+          {"text": "İstenen sonucu ve etkiyi yaratması gerekir.", "scores": {"shaper": 10}}
+        ]
+      },
+      {
+        "id": "b34",
+        "text": "En verimli olduğum çalışma ortamı...",
+        "options": [
+          {"text": "Net hedeflerin ve yapılandırılmış görevlerin olduğu bir ortam.", "scores": {"implementer": 10}},
+          {"text": "İş birliğine dayalı ve pozitif ilişkilerin olduğu bir ortam.", "scores": {"teamworker": 10}},
+          {"text": "Dinamik, rekabetçi ve hızlı tempolu bir ortam.", "scores": {"shaper": 10}},
+          {"text": "Fikirlerimi özgürce keşfedebileceğim esnek bir ortam.", "scores": {"plant": 10, "resource_investigator": 5}}
+        ]
+      },
+      {
+        "id": "b35",
+        "text": "Bir görevi delege ederken...",
+        "options": [
+          {"text": "Kişinin yeteneklerini ve ilgi alanlarını dikkate alarak doğru kişiyi seçerim.", "scores": {"coordinator": 10}},
+          {"text": "Görevin neden önemli olduğunu açıklar ve motive ederim.", "scores": {"shaper": 10}},
+          {"text": "Görevin nasıl yapılacağına dair net talimatlar ve beklentiler sunarım.", "scores": {"implementer": 10}},
+          {"text": "Delege etmekte zorlanırım, çünkü işin doğru yapıldığından emin olmak isterim.", "scores": {"completer_finisher": 10, "specialist": 5}}
+        ]
+      },
+      {
+        "id": "b36",
+        "text": "Ağ oluşturma (networking) etkinliklerinde...",
+        "options": [
+          {"text": "Yeni insanlarla tanışmaktan ve fırsatları keşfetmekten keyif alırım.", "scores": {"resource_investigator": 10}},
+          {"text": "Genellikle tanıdığım ve güvendiğim insanlarla konuşurum.", "scores": {"teamworker": 10}},
+          {"text": "Kendi uzmanlık alanımla ilgili kişilerle derinlemesine sohbetler yaparım.", "scores": {"specialist": 10}},
+          {"text": "Bu tür etkinlikleri biraz yüzeysel bulurum ve genellikle kaçınırım.", "scores": {"monitor_evaluator": 10, "implementer": 5}}
+        ]
+      },
+      {
+        "id": "b37",
+        "text": "Bir projenin geleceği hakkında düşünürken...",
+        "options": [
+          {"text": "Büyük resmi ve uzun vadeli olasılıkları hayal ederim.", "scores": {"plant": 10}},
+          {"text": "Potansiyel engelleri ve riskleri değerlendiririm.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Hedeflere ulaşmak için gerekli adımları ve kaynakları planlarım.", "scores": {"implementer": 10}},
+          {"text": "Projenin ekibe ve paydaşlara nasıl fayda sağlayacağını düşünürüm.", "scores": {"coordinator": 10}}
+        ]
+      },
+      {
+        "id": "b38",
+        "text": "Eleştiriye tepkim genellikle...",
+        "options": [
+          {"text": "Mantıklı ve verilere dayalı ise kabul ederim.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Kişisel olarak almamaya çalışır ve ekibin iyiliği için kullanırım.", "scores": {"teamworker": 10}},
+          {"text": "Beni daha iyisini yapmaya teşvik eden bir motivasyon kaynağı olarak görürüm.", "scores": {"shaper": 10}},
+          {"text": "İşimin her yönünün mükemmel olduğundan emin olmak için bir fırsat olarak görürüm.", "scores": {"completer_finisher": 10}}
+        ]
+      },
+      {
+        "id": "b39",
+        "text": "Bir takımda en sinir bozucu bulduğum şey...",
+        "options": [
+          {"text": "Kararsızlık ve eylemsizlik.", "scores": {"shaper": 10}},
+          {"text": "Yüzeysel analiz ve aceleci kararlar.", "scores": {"monitor_evaluator": 10}},
+          {"text": "Sürekli aynı şeyleri yapmak ve yeni fikirlere kapalı olmak.", "scores": {"plant": 10, "resource_investigator": 5}},
+          {"text": "İşlerin düzensiz ve plansız yapılması.", "scores": {"implementer": 10}}
+        ]
+      },
+      {
+        "id": "b40",
+        "text": "Başarıyı benim için en iyi tanımlayan ifade:",
+        "options": [
+          {"text": "Bir hedefe verimli ve etkili bir şekilde ulaşmak.", "scores": {"implementer": 10, "shaper": 5}},
+          {"text": "Zor bir soruna zarif ve yenilikçi bir çözüm bulmak.", "scores": {"plant": 10, "specialist": 5}},
+          {"text": "Bir bütün olarak ekibin potansiyelini ortaya çıkarmak.", "scores": {"coordinator": 10}},
+          {"text": "İşin sonunda her şeyin tam ve doğru olduğundan emin olmak.", "scores": {"completer_finisher": 10}}
+        ]
       }
     ]
   },
@@ -74,10 +424,10 @@
     "description": "İletişim tarzınızı ve temel motivasyonlarınızı anlayın. Bu test, dört renk tipine göre başkalarıyla nasıl etkileşim kurduğunuzu görmenize yardımcı olur.",
     "duration": "Yaklaşık 8-10 Dakika",
     "resultProfiles": {
-      "red": {"name": "Kırmızı", "description": "İddialı, kararlı ve sonuç odaklı.", "color": "#d32f2f"},
-      "blue": {"name": "Mavi", "description": "Analitik, hassas ve sistematik.", "color": "#1976d2"},
-      "green": {"name": "Yeşil", "description": "Sakin, destekleyici ve sabırlı.", "color": "#388e3c"},
-      "yellow": {"name": "Sarı", "description": "Hevesli, sosyal ve ikna edici.", "color": "#fbc02d"}
+      "red": {"name": "Kırmızı", "description": "İddialı, kararlı ve sonuç odaklı.", "color": "#AFD244"},
+      "blue": {"name": "Mavi", "description": "Analitik, hassas ve sistematik.", "color": "#2EA446"},
+      "green": {"name": "Yeşil", "description": "Sakin, destekleyici ve sabırlı.", "color": "#6a994e"},
+      "yellow": {"name": "Sarı", "description": "Hevesli, sosyal ve ikna edici.", "color": "#f4d35e"}
     },
     "questions": [
       {
@@ -129,6 +479,356 @@
           {"text": "Doğrudanlık ve dürüstlük.", "scores": {"red": 10}},
           {"text": "Pozitif enerji ve ilham.", "scores": {"yellow": 10}}
         ]
+      },
+      {
+        "id": "sc6",
+        "text": "Yeni bir projeye başlarken ilk yaptığım şey...",
+        "options": [
+          {"text": "Hemen harekete geçmek ve sorumluluk almak.", "scores": {"red": 10}},
+          {"text": "Detaylı bir plan ve araştırma yapmak.", "scores": {"blue": 10}},
+          {"text": "Ekip içinde fikir birliği ve destek oluşturmak.", "scores": {"green": 10}},
+          {"text": "Beyin fırtınası yapmak ve büyük resmi hayal etmek.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc7",
+        "text": "Başkalarında en çok takdir ettiğim özellik...",
+        "options": [
+          {"text": "Yetkinlik ve verimlilik.", "scores": {"red": 10}},
+          {"text": "Mantık ve zeka.", "scores": {"blue": 10}},
+          {"text": "Güvenilirlik ve sadakat.", "scores": {"green": 10}},
+          {"text": "Yaratıcılık ve iyimserlik.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc8",
+        "text": "Boş zamanlarımı genellikle şöyle geçiririm...",
+        "options": [
+          {"text": "Rekabetçi sporlar veya zorlu aktivitelerle.", "scores": {"red": 10}},
+          {"text": "Kitap okuyarak, bulmaca çözerek veya bir hobi öğrenerek.", "scores": {"blue": 10}},
+          {"text": "Ailem ve yakın arkadaşlarımla sakin vakit geçirerek.", "scores": {"green": 10}},
+          {"text": "Sosyal etkinliklere katılarak ve yeni insanlarla tanışarak.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc9",
+        "text": "Bir toplantıda, genellikle ben...",
+        "options": [
+          {"text": "Tartışmayı yönlendiren ve kararların alınmasını sağlayan kişiyim.", "scores": {"red": 10}},
+          {"text": "Sorular soran ve verileri analiz eden kişiyim.", "scores": {"blue": 10}},
+          {"text": "Dinleyen ve uzlaşma noktaları arayan kişiyim.", "scores": {"green": 10}},
+          {"text": "Fikirler sunan ve herkesi motive eden kişiyim.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc10",
+        "text": "Beni en çok hayal kırıklığına uğratan şey...",
+        "options": [
+          {"text": "Zaman kaybı ve verimsizlik.", "scores": {"red": 10}},
+          {"text": "Mantıksızlık ve hazırlıksızlık.", "scores": {"blue": 10}},
+          {"text": "Anlaşmazlık ve takdir eksikliği.", "scores": {"green": 10}},
+          {"text": "Rutin ve sıkıcılık.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc11",
+        "text": "Bir araba seçerken en önemli kriterim...",
+        "options": [
+          {"text": "Performansı ve gücü.", "scores": {"red": 10}},
+          {"text": "Güvenlik özellikleri ve yakıt verimliliği.", "scores": {"blue": 10}},
+          {"text": "Konforu ve güvenilirliği.", "scores": {"green": 10}},
+          {"text": "Tasarımı, rengi ve ne kadar dikkat çekici olduğu.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc12",
+        "text": "Bir film izlerken tercihim...",
+        "options": [
+          {"text": "Aksiyon ve macera dolu, rekabetçi bir hikaye.", "scores": {"red": 10}},
+          {"text": "Zeka oyunları içeren, karmaşık bir gizem veya bilim kurgu.", "scores": {"blue": 10}},
+          {"text": "İnsan ilişkileri ve duygular üzerine odaklanan bir dram.", "scores": {"green": 10}},
+          {"text": "Eğlenceli, komik ve iyimser bir komedi.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc13",
+        "text": "E-posta yazarken tarzım genellikle...",
+        "options": [
+          {"text": "Kısa, net ve doğrudan konuya odaklı.", "scores": {"red": 10}},
+          {"text": "Detaylı, iyi yapılandırılmış ve tüm gerekli bilgileri içeren.", "scores": {"blue": 10}},
+          {"text": "Nazik, kişisel ve ilişki odaklı.", "scores": {"green": 10}},
+          {"text": "Samimi, enerjik ve genellikle ifadeler (emoji) içeren.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc14",
+        "text": "Bir tatil planlarken en çok neye odaklanırım?",
+        "options": [
+          {"text": "Mümkün olduğunca çok aktivite yapmak ve yeni yerler fethetmek.", "scores": {"red": 10}},
+          {"text": "Gidilecek yerler hakkında detaylı araştırma yapmak ve bir program oluşturmak.", "scores": {"blue": 10}},
+          {"text": "Dinlenmek, rahatlamak ve sevdiklerimle huzurlu zaman geçirmek.", "scores": {"green": 10}},
+          {"text": "Eğlenceli partiler, sosyal etkinlikler ve yeni insanlarla tanışma fırsatları.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc15",
+        "text": "Risk almak konusunda...",
+        "options": [
+          {"text": "Kazanma potansiyeli yüksekse, hesaplanmış riskler alırım.", "scores": {"red": 10}},
+          {"text": "Tüm verileri analiz etmeden ve sonuçları değerlendirmeden risk almam.", "scores": {"blue": 10}},
+          {"text": "Genellikle riskten kaçınır, güvenli ve bilinen yolları tercih ederim.", "scores": {"green": 10}},
+          {"text": "Heyecan verici geliyorsa, spontane riskler alabilirim.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc16",
+        "text": "Bir grup çalışmasında en rahat olduğum rol...",
+        "options": [
+          {"text": "Liderlik etmek ve grubu hedefe yönlendirmek.", "scores": {"red": 10}},
+          {"text": "Araştırma yapmak, planlamak ve detayları yönetmek.", "scores": {"blue": 10}},
+          {"text": "Ekip üyeleri arasında uyumu sağlamak ve destek olmak.", "scores": {"green": 10}},
+          {"text": "Fikirler üretmek ve ekibi motive etmek.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc17",
+        "text": "Geri bildirim alırken...",
+        "options": [
+          {"text": "Doğrudan ve dürüst olmasını tercih ederim, lafı dolandırmasın.", "scores": {"red": 10}},
+          {"text": "Spesifik örneklere ve mantıksal argümanlara dayanmasını beklerim.", "scores": {"blue": 10}},
+          {"text": "Nazik ve yapıcı bir dille sunulmasını önemserim.", "scores": {"green": 10}},
+          {"text": "Olumlu yönleri vurgulayan ve teşvik edici olmasını severim.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc18",
+        "text": "Para harcama alışkanlığım...",
+        "options": [
+          {"text": "Yatırım olarak gördüğüm, statü veya güç getiren şeylere harcarım.", "scores": {"red": 10}},
+          {"text": "Bütçemi dikkatlice planlar, en iyi fiyat/performans oranını ararım.", "scores": {"blue": 10}},
+          {"text": "Güvenlik ve sevdiklerimin rahatı için harcama yaparım, genellikle tutumluyumdur.", "scores": {"green": 10}},
+          {"text": "Anlık keyifler, sosyal deneyimler ve eğlenceli şeyler için harcarım.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc19",
+        "text": "Bir sorunla karşılaştığımda ilk tepkim...",
+        "options": [
+          {"text": "Hemen kontrolü ele alıp bir çözüm bulmaya çalışmak.", "scores": {"red": 10}},
+          {"text": "Durup sorunu her açıdan analiz etmek.", "scores": {"blue": 10}},
+          {"text": "Başkalarının ne düşündüğünü sormak ve destek aramak.", "scores": {"green": 10}},
+          {"text": "Duruma iyimser yaklaşmak ve yaratıcı çözümler düşünmek.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc20",
+        "text": "İnsanlarla tanışırken ilk olarak neye dikkat ederim?",
+        "options": [
+          {"text": "Kendine güvenlerine ve kararlılıklarına.", "scores": {"red": 10}},
+          {"text": "Ne kadar bilgili ve mantıklı konuştuklarına.", "scores": {"blue": 10}},
+          {"text": "Ne kadar samimi ve cana yakın olduklarına.", "scores": {"green": 10}},
+          {"text": "Ne kadar enerjik ve eğlenceli olduklarına.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc21",
+        "text": "İdeal bir hafta sonu benim için...",
+        "options": [
+          {"text": "Zorlu bir fiziksel aktivite veya rekabetçi bir oyun.", "scores": {"red": 10}},
+          {"text": "Yeni bir şey öğrenmek, bir müzeyi gezmek veya bir belgesel izlemek.", "scores": {"blue": 10}},
+          {"text": "Evde sevdiklerimle sakin ve huzurlu zaman geçirmek.", "scores": {"green": 10}},
+          {"text": "Arkadaşlarımla dışarı çıkmak, partiye gitmek veya büyük bir sosyal etkinliğe katılmak.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc22",
+        "text": "Zaman yönetimi anlayışım...",
+        "options": [
+          {"text": "Zaman eşittir sonuç. Her an verimli kullanılmalıdır.", "scores": {"red": 10}},
+          {"text": "Planlara ve programlara sadık kalmak önemlidir.", "scores": {"blue": 10}},
+          {"text": "İnsanlara zaman ayırmak önemlidir, programlar esnek olabilir.", "scores": {"green": 10}},
+          {"text": "Zaman eğlenmek içindir, katı planlardan hoşlanmam.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc23",
+        "text": "Bir tartışmada haksız olduğumu fark edersem...",
+        "options": [
+          {"text": "Bunu kabul etmekte zorlanırım ama sonunda sonucu kabul ederim.", "scores": {"red": 10}},
+          {"text": "Mantıklı bir şekilde ikna olursam, fikrimi hemen değiştiririm.", "scores": {"blue": 10}},
+          {"text": "Tartışmayı uzatmamak için geri adım atar ve uyumu korurum.", "scores": {"green": 10}},
+          {"text": "Konuyu şakaya vurur ve durumu hafifletmeye çalışırım.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc24",
+        "text": "Giyinme tarzım genellikle...",
+        "options": [
+          {"text": "Güçlü, profesyonel ve dikkat çekici.", "scores": {"red": 10}},
+          {"text": "Klasik, işlevsel ve kaliteli.", "scores": {"blue": 10}},
+          {"text": "Rahat, sade ve abartısız.", "scores": {"green": 10}},
+          {"text": "Renkli, modaya uygun ve eğlenceli.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc25",
+        "text": "Bir hediye seçerken...",
+        "options": [
+          {"text": "İşe yarar, pratik ve etkileyici bir şey seçerim.", "scores": {"red": 10}},
+          {"text": "Kişinin ilgi alanlarına göre araştırılmış ve düşünülmüş bir şey alırım.", "scores": {"blue": 10}},
+          {"text": "Duygusal değeri olan, manevi bir hediye tercih ederim.", "scores": {"green": 10}},
+          {"text": "Eğlenceli, sürprizli ve kişiyi güldürecek bir şey seçerim.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc26",
+        "text": "En büyük korkum...",
+        "options": [
+          {"text": "Kontrolü kaybetmek veya başarısız olmak.", "scores": {"red": 10}},
+          {"text": "Hata yapmak veya yetersiz görünmek.", "scores": {"blue": 10}},
+          {"text": "Sevdiklerimi kaybetmek veya çatışma yaşamak.", "scores": {"green": 10}},
+          {"text": "Sıkılmak veya yalnız kalmak.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc27",
+        "text": "Bir evi dekore ederken önceliğim...",
+        "options": [
+          {"text": "Modern, cesur ve etkileyici bir tasarım.", "scores": {"red": 10}},
+          {"text": "Minimalist, düzenli ve işlevsel bir alan.", "scores": {"blue": 10}},
+          {"text": "Sıcak, rahat ve davetkar bir atmosfer.", "scores": {"green": 10}},
+          {"text": "Aydınlık, ferah ve sosyal alanları olan bir mekan.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc28",
+        "text": "Müzakere ederken taktiğim...",
+        "options": [
+          {"text": "Kazanmak için iddialı ve doğrudan olmak.", "scores": {"red": 10}},
+          {"text": "Hazırlıklı olmak ve argümanlarımı gerçeklerle desteklemek.", "scores": {"blue": 10}},
+          {"text": "Her iki taraf için de adil bir çözüm bulmaya çalışmak.", "scores": {"green": 10}},
+          {"text": "İyi bir ilişki kurarak ve ikna ederek kazan-kazan durumu yaratmak.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc29",
+        "text": "Başkalarını motive etmek için...",
+        "options": [
+          {"text": "Onlara zorlu hedefler koyar ve ödüller vaat ederim.", "scores": {"red": 10}},
+          {"text": "Onlara net bir plan sunar ve mantıklı nedenler açıklarım.", "scores": {"blue": 10}},
+          {"text": "Onları kişisel olarak destekler ve takdir ettiğimi gösteririm.", "scores": {"green": 10}},
+          {"text": "Onlara ilham verir ve işi eğlenceli hale getiririm.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc30",
+        "text": "İdeal bir iş ortamı benim için...",
+        "options": [
+          {"text": "Rekabetin olduğu ve sonuçların ödüllendirildiği bir yer.", "scores": {"red": 10}},
+          {"text": "Prosedürlerin net olduğu ve kalitenin önemsendiği bir yer.", "scores": {"blue": 10}},
+          {"text": "İş birliğine dayalı ve destekleyici bir ekip ortamı.", "scores": {"green": 10}},
+          {"text": "Yaratıcı, dinamik ve sosyal etkileşimin bol olduğu bir yer.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc31",
+        "text": "Bir talimat verirken...",
+        "options": [
+          {"text": "Ne yapılması gerektiğini emrederim.", "scores": {"red": 10}},
+          {"text": "Adım adım, yazılı ve detaylı talimatlar veririm.", "scores": {"blue": 10}},
+          {"text": "Nazikçe rica eder ve yardımcı olmayı teklif ederim.", "scores": {"green": 10}},
+          {"text": "Heyecanlı bir şekilde anlatır ve ilham vermeye çalışırım.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc32",
+        "text": "Bir partide kendimi nasıl hissederim?",
+        "options": [
+          {"text": "İş ve başarı hakkında konuşabileceğim kişiler ararım.", "scores": {"red": 10}},
+          {"text": "Küçük bir grupla derin ve mantıklı bir sohbeti tercih ederim.", "scores": {"blue": 10}},
+          {"text": "Herkesin iyi vakit geçirdiğinden emin olmaya çalışırım.", "scores": {"green": 10}},
+          {"text": "Partinin can damarıyım, herkesle konuşur ve dans ederim.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc33",
+        "text": "Birisi sözünü tutmadığında...",
+        "options": [
+          {"text": "Hayal kırıklığına uğrar ve yüzleşirim.", "scores": {"red": 10}},
+          {"text": "Nedenini anlamaya çalışır ve gelecekte ona güvenmekte tereddüt ederim.", "scores": {"blue": 10}},
+          {"text": "Üzülürüm ama çatışmamak için genellikle bir şey söylemem.", "scores": {"green": 10}},
+          {"text": "Kolayca affederim ve durumu çok ciddiye almam.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc34",
+        "text": "Okumak için bir kitap seçerken...",
+        "options": [
+          {"text": "Başarı, strateji veya liderlik üzerine kitapları tercih ederim.", "scores": {"red": 10}},
+          {"text": "Tarih, bilim veya biyografi gibi kurgu dışı kitapları severim.", "scores": {"blue": 10}},
+          {"text": "İnsan hikayeleri, ilişkiler veya kişisel gelişim kitaplarını okurum.", "scores": {"green": 10}},
+          {"text": "Macera, fantezi veya popüler, çok satan romanları seçerim.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc35",
+        "text": "Eleştiri yaparken yaklaşımım...",
+        "options": [
+          {"text": "Doğrudan ve bazen sert olabilir.", "scores": {"red": 10}},
+          {"text": "Objektif, mantıklı ve yapıcı olmaya çalışırım.", "scores": {"blue": 10}},
+          {"text": "Eleştiri yapmaktan kaçınırım, yaparsam da çok nazik olurum.", "scores": {"green": 10}},
+          {"text": "İltifatla başlar, olumlu bir çerçevede sunarım.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc36",
+        "text": "En sevdiğim oyun türü...",
+        "options": [
+          {"text": "Kazanıp kaybetmenin net olduğu strateji veya spor oyunları.", "scores": {"red": 10}},
+          {"text": "Mantık ve zeka gerektiren bulmaca veya trivia oyunları.", "scores": {"blue": 10}},
+          {"text": "Rekabetin olmadığı, iş birliğine dayalı masa oyunları.", "scores": {"green": 10}},
+          {"text": "Kalabalıkla oynanan, bol kahkahalı parti oyunları.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc37",
+        "text": "Bir konuşma sırasında...",
+        "options": [
+          {"text": "Genellikle konuşmayı ben yönetirim ve sözümün kesilmesinden hoşlanmam.", "scores": {"red": 10}},
+          {"text": "Konuşmadan önce düşünür, dikkatlice dinler ve sonra cevap veririm.", "scores": {"blue": 10}},
+          {"text": "İyi bir dinleyiciyimdir ve karşımdakine soru sorarak onu anlamaya çalışırım.", "scores": {"green": 10}},
+          {"text": "Çok konuşur, hikayeler anlatır ve sık sık konu değiştiririm.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc38",
+        "text": "Sloganım şu olabilirdi:",
+        "options": [
+          {"text": "'Ya hep ya hiç!'", "scores": {"red": 10}},
+          {"text": "'Önce düşün, sonra yap.'", "scores": {"blue": 10}},
+          {"text": "'Huzur her şeyden önemlidir.'", "scores": {"green": 10}},
+          {"text": "'Hayat bir partidir!'", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc39",
+        "text": "Bir teknolojik alet alırken...",
+        "options": [
+          {"text": "En yeni, en hızlı ve en güçlü modeli alırım.", "scores": {"red": 10}},
+          {"text": "Özelliklerini, yorumlarını ve teknik detaylarını incelerim.", "scores": {"blue": 10}},
+          {"text": "Kullanımı kolay, güvenilir ve uzun ömürlü olanı tercih ederim.", "scores": {"green": 10}},
+          {"text": "Popüler olan, rengi ve tasarımı güzel olanı seçerim.", "scores": {"yellow": 10}}
+        ]
+      },
+      {
+        "id": "sc40",
+        "text": "Başkalarının beni nasıl görmesini isterim?",
+        "options": [
+          {"text": "Başarılı ve güçlü biri olarak.", "scores": {"red": 10}},
+          {"text": "Zeki ve bilgili biri olarak.", "scores": {"blue": 10}},
+          {"text": "İyi kalpli ve güvenilir biri olarak.", "scores": {"green": 10}},
+          {"text": "Eğlenceli ve ilham veren biri olarak.", "scores": {"yellow": 10}}
+        ]
       }
     ]
   },
@@ -138,9 +838,9 @@
     "description": "Baskın öğrenme stilinizi belirleyin: Görsel, İşitsel veya Kinestetik. En iyi nasıl öğrendiğinizi bilmek, daha etkili çalışmanıza ve öğrenmenize yardımcı olur.",
     "duration": "Yaklaşık 5-7 Dakika",
      "resultProfiles": {
-      "visual": {"name": "Görsel", "description": "En iyi görerek öğrenir.", "color": "#0288d1"},
-      "auditory": {"name": "İşitsel", "description": "En iyi duyarak öğrenir.", "color": "#c2185b"},
-      "kinesthetic": {"name": "Kinestetik", "description": "En iyi yaparak öğrenir.", "color": "#f57c00"}
+      "visual": {"name": "Görsel", "description": "En iyi görerek öğrenir.", "color": "#2EA446"},
+      "auditory": {"name": "İşitsel", "description": "En iyi duyarak öğrenir.", "color": "#AFD244"},
+      "kinesthetic": {"name": "Kinestetik", "description": "En iyi yaparak öğrenir.", "color": "#6a994e"}
     },
     "questions": [
       {
@@ -186,6 +886,321 @@
           {"text": "Renkli kalemlerle notlar almak ve zihin haritaları oluşturmak.", "scores": {"visual": 10}},
           {"text": "Notlarımı yüksek sesle okumak veya bir çalışma arkadaşımla tartışmak.", "scores": {"auditory": 10}},
           {"text": "Konuyla ilgili pratik uygulamalar yapmak veya odada dolaşarak tekrar etmek.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls6",
+        "text": "Bir sunum izlerken en çok neye odaklanırsınız?",
+        "options": [
+          {"text": "Slaytlardaki grafiklere, resimlere ve metinlere.", "scores": {"visual": 10}},
+          {"text": "Konuşmacının ses tonuna, vurgularına ve anlattığı hikayelere.", "scores": {"auditory": 10}},
+          {"text": "Sunumdaki interaktif bölümlere veya verilen örneklere.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls7",
+        "text": "Bir kelimenin yazılışını hatırlamak için...",
+        "options": [
+          {"text": "Kelimeyi gözümde canlandırırım.", "scores": {"visual": 10}},
+          {"text": "Kelimeyi yüksek sesle veya içimden hecelerim.", "scores": {"auditory": 10}},
+          {"text": "Kelimeyi parmağımla havaya veya bir yüzeye yazarım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls8",
+        "text": "Bir hobi seçmeniz gerekseydi, hangisi olurdu?",
+        "options": [
+          {"text": "Fotoğrafçılık, çizim veya resim.", "scores": {"visual": 10}},
+          {"text": "Müzik aleti çalmak, podcast kaydetmek veya hikaye anlatıcılığı.", "scores": {"auditory": 10}},
+          {"text": "Dans, bahçe işleri, ahşap işçiliği veya spor.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls9",
+        "text": "Bir konuşmayı hatırlarken, en çok aklımda kalan...",
+        "options": [
+          {"text": "Konuşan kişinin yüz ifadesi ve jestleri.", "scores": {"visual": 10}},
+          {"text": "Söylediği belirli kelimeler ve ses tonu.", "scores": {"auditory": 10}},
+          {"text": "Konuşmanın bende uyandırdığı genel his veya fikir.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls10",
+        "text": "Bir grup projesinde en rahat olduğum rol...",
+        "options": [
+          {"text": "Sunumu tasarlamak veya raporun görsel düzenini oluşturmak.", "scores": {"visual": 10}},
+          {"text": "Fikirleri sözlü olarak sunmak veya grup tartışmalarını yönetmek.", "scores": {"auditory": 10}},
+          {"text": "Prototip oluşturmak, deney yapmak veya işin pratik kısmını yapmak.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls11",
+        "text": "Yeni bir telefonun nasıl kullanılacağını öğrenmek için...",
+        "options": [
+          {"text": "YouTube'da bir 'nasıl yapılır' videosu izlerim.", "scores": {"visual": 10}},
+          {"text": "Bir arkadaşımın bana özelliklerini anlatmasını isterim.", "scores": {"auditory": 10}},
+          {"text": "Menüler arasında gezinir ve tuşlara basarak kendim keşfederim.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls12",
+        "text": "Ders çalışırken dikkatim dağıldığında...",
+        "options": [
+          {"text": "Notlarıma veya kitabıma bir şeyler çizerim.", "scores": {"visual": 10}},
+          {"text": "Konuyu kendi kendime fısıldayarak veya mırıldanarak tekrar ederim.", "scores": {"auditory": 10}},
+          {"text": "Kalkıp kısa bir yürüyüş yapar veya esneme hareketleri yaparım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls13",
+        "text": "Birisinin adını hatırlamak için...",
+        "options": [
+          {"text": "Yüzünü ve tanıştığımız yeri hayal ederim.", "scores": {"visual": 10}},
+          {"text": "Adını birkaç kez kendi kendime tekrar ederim.", "scores": {"auditory": 10}},
+          {"text": "Adını bir yere yazar veya havada yazar gibi yaparım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls14",
+        "text": "Bir yemek tarifi öğrenirken...",
+        "options": [
+          {"text": "Resimli bir yemek kitabına veya videoya bakarım.", "scores": {"visual": 10}},
+          {"text": "Bir aşçılık programını dinler veya birinin bana tarifi anlatmasını isterim.", "scores": {"auditory": 10}},
+          {"text": "Malzemeleri tezgaha koyar ve tarifi deneyerek yaparım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls15",
+        "text": "Bir toplantıdaki bilgileri en iyi nasıl hatırlarım?",
+        "options": [
+          {"text": "Detaylı notlar alarak ve anahtar kelimelerin altını çizerek.", "scores": {"visual": 10}},
+          {"text": "Tartışmayı dikkatle dinleyerek ve önemli noktaları zihnimde tekrar ederek.", "scores": {"auditory": 10}},
+          {"text": "Konuşurken ellerimi kullanarak veya not alırken hareket ederek.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls16",
+        "text": "Yabancı bir şehirde gezerken...",
+        "options": [
+          {"text": "Bir harita kullanır veya tabelaları takip ederim.", "scores": {"visual": 10}},
+          {"text": "Yerel halka yol sorarım.", "scores": {"auditory": 10}},
+          {"text": "Sadece yürüyerek ve etrafı keşfederek yolumu bulurum.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls17",
+        "text": "Bir konu hakkında bilgi edinmek için en iyi yol...",
+        "options": [
+          {"text": "İnfografikler, şemalar ve resimler içeren bir makale okumak.", "scores": {"visual": 10}},
+          {"text": "Konuyla ilgili bir podcast veya sesli kitap dinlemek.", "scores": {"auditory": 10}},
+          {"text": "Konuyla ilgili bir atölye çalışmasına veya interaktif bir sergiye katılmak.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls18",
+        "text": "En çok keyif aldığım şey...",
+        "options": [
+          {"text": "Bir sanat galerisini gezmek veya fotoğraf çekmek.", "scores": {"visual": 10}},
+          {"text": "Bir konsere gitmek veya müzik dinlemek.", "scores": {"auditory": 10}},
+          {"text": "Spor yapmak veya bir şeyler inşa etmek.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls19",
+        "text": "Okurken...",
+        "options": [
+          {"text": "Sayfadaki resimlere ve düzenine dikkat ederim.", "scores": {"visual": 10}},
+          {"text": "Kelimeleri zihnimde duyar veya sessizce okurum.", "scores": {"auditory": 10}},
+          {"text": "Parmağımla satırları takip eder veya okurken hareket ederim.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls20",
+        "text": "Yeni bir dans figürü öğrenmek için...",
+        "options": [
+          {"text": "Birinin yapışını dikkatlice izlerim.", "scores": {"visual": 10}},
+          {"text": "Adımların sayısını ve ritmini dinlerim.", "scores": {"auditory": 10}},
+          {"text": "Müziği hisseder ve hemen denemeye başlarım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls21",
+        "text": "Bir hikaye anlatırken...",
+        "options": [
+          {"text": "İnsanların ve yerlerin nasıl göründüğünü detaylıca betimlerim.", "scores": {"visual": 10}},
+          {"text": "Ses tonumu değiştirir ve farklı karakter sesleri kullanırım.", "scores": {"auditory": 10}},
+          {"text": "Anlatırken çok fazla el kol hareketi yapar ve canlandırma yaparım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls22",
+        "text": "Bir bilgisayar programı kullanmayı öğrenirken...",
+        "options": [
+          {"text": "Ekran görüntülü bir kılavuzu takip ederim.", "scores": {"visual": 10}},
+          {"text": "Sesli talimatları olan bir eğitim videosunu tercih ederim.", "scores": {"auditory": 10}},
+          {"text": "Menüleri ve düğmeleri tıklayarak kendim keşfederim.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls23",
+        "text": "Konsantre olmak için...",
+        "options": [
+          {"text": "Sessiz ve görsel olarak düzenli bir ortama ihtiyacım var.", "scores": {"visual": 10}},
+          {"text": "Arka planda hafif bir müzik veya ses olması bana yardımcı olur.", "scores": {"auditory": 10}},
+          {"text": "Ara sıra hareket etme veya küçük molalar verme ihtiyacı duyarım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls24",
+        "text": "Bir satın alma kararı verirken...",
+        "options": [
+          {"text": "Ürünün ambalajına ve görünüşüne önem veririm.", "scores": {"visual": 10}},
+          {"text": "Satış görevlisinin anlattıklarını veya arkadaş tavsiyelerini dinlerim.", "scores": {"auditory": 10}},
+          {"text": "Ürünü elime alıp denemem veya test etmem gerekir.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls25",
+        "text": "Bir şeyi hatırlamaya çalıştığımda...",
+        "options": [
+          {"text": "Gözlerimi kapatıp o anın bir fotoğrafını zihnimde canlandırırım.", "scores": {"visual": 10}},
+          {"text": "O sırada çalan şarkıyı veya konuşulanları hatırlamaya çalışırım.", "scores": {"auditory": 10}},
+          {"text": "O sırada ne yaptığımı veya ne hissettiğimi hatırlamaya çalışırım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls26",
+        "text": "Bir sunum yaparken en rahat olduğum yöntem...",
+        "options": [
+          {"text": "Görsel materyaller, slaytlar ve grafikler kullanmak.", "scores": {"visual": 10}},
+          {"text": "Konuşarak, hikayeler anlatarak ve soru-cevap yaparak.", "scores": {"auditory": 10}},
+          {"text": "İzleyicileri dahil ederek, bir şeyler göstererek veya bir aktivite yaptırarak.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls27",
+        "text": "İlham almak için...",
+        "options": [
+          {"text": "İlginç resimlere, tasarımlara veya filmlere bakarım.", "scores": {"visual": 10}},
+          {"text": "İlham verici bir konuşma dinler veya müzik açarım.", "scores": {"auditory": 10}},
+          {"text": "Doğada yürüyüşe çıkar veya yeni bir yere giderim.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls28",
+        "text": "Bir tartışmayı takip ederken...",
+        "options": [
+          {"text": "Konuşmacının vücut dilini ve yüz ifadelerini izlerim.", "scores": {"visual": 10}},
+          {"text": "Kelimelerin seçimine ve argümanların tonlamasına odaklanırım.", "scores": {"auditory": 10}},
+          {"text": "Tartışmanın yarattığı genel atmosferi ve enerjiyi hissederim.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls29",
+        "text": "Bir alışveriş listesi yaparken...",
+        "options": [
+          {"text": "Listeyi yazar ve markette ona bakarım.", "scores": {"visual": 10}},
+          {"text": "Alacaklarımı aklımda tutmak için birkaç kez tekrar ederim.", "scores": {"auditory": 10}},
+          {"text": "Listeyi yazmam, market reyonlarında gezerken neye ihtiyacım olduğunu hatırlarım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls30",
+        "text": "Bir problemi çözmeye çalışırken...",
+        "options": [
+          {"text": "Problemi bir kağıda çizer veya bir şema oluştururum.", "scores": {"visual": 10}},
+          {"text": "Problemi biriyle konuşur veya kendi kendime sesli düşünürüm.", "scores": {"auditory": 10}},
+          {"text": "Problemin parçalarını temsil eden nesnelerle oynar veya odada dolaşırım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls31",
+        "text": "En iyi anladığım şakalar...",
+        "options": [
+          {"text": "Karikatürler veya görsel komedi içerenler.", "scores": {"visual": 10}},
+          {"text": "Kelime oyunları veya fıkralar içerenler.", "scores": {"auditory": 10}},
+          {"text": "Fiziksel komedi veya birinin taklidini içerenler.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls32",
+        "text": "Yeni bir yere taşındığımda, çevreyi öğrenmek için...",
+        "options": [
+          {"text": "Bölgenin haritasını incelerim.", "scores": {"visual": 10}},
+          {"text": "Komşularla konuşur ve tavsiyeler alırım.", "scores": {"auditory": 10}},
+          {"text": "Arabayla veya yürüyerek etrafta dolaşırım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls33",
+        "text": "Bir talimat setini hatırlamam gerektiğinde...",
+        "options": [
+          {"text": "Yazılı olarak görmem gerekir.", "scores": {"visual": 10}},
+          {"text": "Birinin bana yüksek sesle okuması gerekir.", "scores": {"auditory": 10}},
+          {"text": "Adımları bir kez uygulamam gerekir.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls34",
+        "text": "Bir web sitesinde gezinirken en çok neye dikkat ederim?",
+        "options": [
+          {"text": "Sayfanın tasarımına, renklerine ve resimlerine.", "scores": {"visual": 10}},
+          {"text": "Eğer varsa, videolardaki veya sesli açıklamalardaki bilgilere.", "scores": {"auditory": 10}},
+          {"text": "Siteyle etkileşime girme kolaylığına, düğmelerin nasıl çalıştığına.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls35",
+        "text": "Stresli olduğumda rahatlamak için...",
+        "options": [
+          {"text": "Güzel bir manzaraya bakarım veya bir film izlerim.", "scores": {"visual": 10}},
+          {"text": "Sakinleştirici müzik dinlerim veya bir arkadaşımla konuşurum.", "scores": {"auditory": 10}},
+          {"text": "Egzersiz yapar, yürüyüşe çıkar veya bir şeyler örerim.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls36",
+        "text": "Bir spor öğrenirken en çok neye ihtiyacım var?",
+        "options": [
+          {"text": "Tekniği gösteren bir videoyu izlemeye.", "scores": {"visual": 10}},
+          {"text": "Antrenörün talimatlarını dikkatlice dinlemeye.", "scores": {"auditory": 10}},
+          {"text": "Hareketleri tekrar tekrar pratik etmeye.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls37",
+        "text": "Bir bahçeyi düzenlerken...",
+        "options": [
+          {"text": "Önce bir plan çizer, bitkilerin renk ve şekillerini hayal ederim.", "scores": {"visual": 10}},
+          {"text": "Bahçe işleri hakkında bir podcast dinler veya bir uzmandan tavsiye alırım.", "scores": {"auditory": 10}},
+          {"text": "Doğrudan toprağa dalar, bitkileri farklı yerlere koyarak nasıl durduğuna bakarım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls38",
+        "text": "Bir fikri anladığımı göstermek için...",
+        "options": [
+          {"text": "Anladığımı gösteren bir diyagram veya resim çizerim.", "scores": {"visual": 10}},
+          {"text": "Fikri kendi kelimelerimle açıklarım.", "scores": {"auditory": 10}},
+          {"text": "Fikri kullanarak bir örnek oluşturur veya bir canlandırma yaparım.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls39",
+        "text": "Bir enstrüman çalmayı öğrenirken...",
+        "options": [
+          {"text": "Notaları okumayı ve parmak pozisyonlarını görmeyi tercih ederim.", "scores": {"visual": 10}},
+          {"text": "Melodiyi dinleyerek ve kulağımla çıkarmaya çalışarak öğrenirim.", "scores": {"auditory": 10}},
+          {"text": "Enstrümanı elime alıp deneme yanılma yoluyla öğrenirim.", "scores": {"kinesthetic": 10}}
+        ]
+      },
+      {
+        "id": "ls40",
+        "text": "Genel olarak, en iyi öğrendiğim zaman...",
+        "options": [
+          {"text": "Bir şeyler görebildiğim, okuyabildiğim veya izleyebildiğim zaman.", "scores": {"visual": 10}},
+          {"text": "Bir şeyler dinleyebildiğim, konuşabildiğim veya tartışabildiğim zaman.", "scores": {"auditory": 10}},
+          {"text": "Bir şeyler yapabildiğim, dokunabildiğim veya deneyimleyebildiğim zaman.", "scores": {"kinesthetic": 10}}
         ]
       }
     ]
