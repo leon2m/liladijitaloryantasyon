@@ -105,14 +105,14 @@ const clearToken = () => localStorage.removeItem(DEVICE_TOKEN_KEY);
 const getTests = async (): Promise<Test[]> => {
     await sleep(MOCK_LATENCY);
     // This is a real fetch, but it's same-origin so it works without CORS.
-    const response = await fetch('/public/data/tests.json');
+    const response = await fetch('/data/tests.json');
     if (!response.ok) throw new ApiError("Test verileri yüklenemedi.");
     return await response.json();
 };
 
 const getOrientation = async (): Promise<OrientationData> => {
     await sleep(MOCK_LATENCY);
-    const response = await fetch('/public/data/orientation.json');
+    const response = await fetch('/data/orientation.json');
     if (!response.ok) throw new ApiError("Oryantasyon verileri yüklenemedi.");
     return await response.json();
 };
@@ -206,7 +206,7 @@ const updateOrientationProgress = async (stepId: string): Promise<string[]> => {
 // --- Chat & Suggestions ---
 const chatWithLila = async (message: string): Promise<string> => {
     await sleep(MOCK_LATENCY + 700);
-    const response = await fetch('/public/data/chatbot.json');
+    const response = await fetch('/data/chatbot.json');
     const chatbotData = await response.json();
     
     const lowerMessage = message.toLowerCase();
