@@ -1,10 +1,11 @@
+
 {
   "greeting": "Merhaba! Ben Lila, değerlendirme sürecinizdeki rehberiniz. Bugün size nasıl yardımcı olabilirim?",
   "fallback": "Sanırım anlayamadım. Bana testler, KVKK veya bundan sonra ne yapacağınız hakkında sorular sorabilirsiniz.",
   "rules": [
     {
       "keywords": ["test", "testler", "değerlendirme"],
-      "response": "Üç farklı değerlendirmemiz mevcut: Belbin Takım Rolleri, Sosyal Renk Kişilik ve Öğrenme Stilleri. 'Keşif Paneli' sayfasından birini seçerek başlayabilirsiniz."
+      "response": "Üç farklı değerlendirmemiz mevcut: Belbin Takım Rolleri, Sosyal Renk Kişilik ve Öğrenme Stilleri. 'Test Seç' sayfasından birini seçebilirsiniz."
     },
     {
       "keywords": ["belbin"],
@@ -24,11 +25,11 @@
     },
     {
       "keywords": ["sonuç", "sonuçlar", "rapor"],
-      "response": "Bir testi tamamladıktan sonra, profilinizi anlamanıza yardımcı olacak grafikler ve kişiselleştirilmiş bir yorum içeren ayrıntılı bir sonuç sayfası göreceksiniz. Geçmiş sonuçlarınıza 'Sonuç Arşivim' sayfasından ulaşabilirsiniz."
+      "response": "Bir testi tamamladıktan sonra, profilinizi anlamanıza yardımcı olacak grafikler ve kişiselleştirilmiş bir yorum içeren ayrıntılı bir sonuç sayfası göreceksiniz."
     },
     {
       "keywords": ["takıldım", "yardım", "sonraki"],
-      "response": "Eğer yeni başladıysanız, 'Keşif Paneli' sayfasından bir test seçebilirsiniz. Dilerseniz 'Oryantasyon' modülünü takip ederek de ilerleyebilirsiniz."
+      "response": "Onay verdiyseniz, lütfen 'Test Seç' sayfasına ilerleyin. Bir testi bitirdiyseniz, sonuçlarınızı görmelisiniz. Daha fazla yardıma ihtiyacınız varsa, lütfen bir yöneticiyle iletişime geçin."
     },
      {
       "keywords": ["merhaba", "selam"],

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { apiService } from '../../services/apiService';
+// Fix: Import the AdminDashboardStats type for type safety.
+import { AdminDashboardStats } from '../../types';
 
 interface StatCardProps {
     title: string;
@@ -23,7 +25,8 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, icon }) => (
 const COLORS = ['#2EA446', '#AFD244', '#6a994e', '#a7c957', '#84a98c'];
 
 function AdminDashboard(): React.ReactNode {
-    const [stats, setStats] = useState<{ totalUsers: number; totalTests: number; distribution: any[] } | null>(null);
+    // Fix: Use the AdminDashboardStats type for the component's state. This resolves the error on setStats.
+    const [stats, setStats] = useState<AdminDashboardStats | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
