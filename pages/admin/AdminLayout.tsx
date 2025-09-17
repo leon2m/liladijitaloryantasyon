@@ -1,18 +1,18 @@
 import React from 'react';
+import { Outlet } from 'react-router-dom';
 import AdminSidebar from '../../components/admin/AdminSidebar';
 
 interface AdminLayoutProps {
-    children: React.ReactNode;
     onLogout: () => void;
 }
 
-function AdminLayout({ children, onLogout }: AdminLayoutProps): React.ReactNode {
+function AdminLayout({ onLogout }: AdminLayoutProps): React.ReactNode {
     return (
         <div className="flex w-full min-h-screen">
             <AdminSidebar onLogout={onLogout} />
             <main className="flex-grow p-8 bg-gray-50/50 w-full overflow-y-auto">
                 <div className="max-w-7xl mx-auto">
-                    {children}
+                    <Outlet />
                 </div>
             </main>
         </div>

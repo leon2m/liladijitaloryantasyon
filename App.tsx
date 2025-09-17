@@ -50,7 +50,7 @@ const MobileHeader: React.FC<{ onToggle: () => void; title: string }> = ({ onTog
 
 
 // Main layout for authenticated users
-const AppLayout: React.FC<{ onLogout: () => void; children: React.ReactNode }> = ({ onLogout, children }) => {
+const AppLayout: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
   const { user } = useData();
@@ -73,7 +73,9 @@ const AppLayout: React.FC<{ onLogout: () => void; children: React.ReactNode }> =
             onClose={() => setIsSidebarOpen(false)}
           />
           <main className="main-content">
-            {children}
+            <div className="main-content-wrapper w-full">
+                <Outlet />
+            </div>
           </main>
       </div>
       {isSidebarOpen && (
@@ -85,6 +87,13 @@ const AppLayout: React.FC<{ onLogout: () => void; children: React.ReactNode }> =
       )}
     </>
   );
+};
+
+const AdminProtectedRoute: React.FC<{ isAdmin: boolean; children: React.ReactNode }> = ({ isAdmin, children }) => {
+    if (!isAdmin) {
+        return <Navigate to="/admin/login" replace />;
+    }
+    return <>{children}</>;
 };
 
 
@@ -104,14 +113,10 @@ function AppContent() {
         setIsCheckingAdmin(true);
         const adminIsAuthenticated = await apiService.checkAdminAuth();
         setIsAdmin(adminIsAuthenticated);
-        const isAdminPath = location.pathname.startsWith('/admin');
-        if (isAdminPath && !adminIsAuthenticated && location.pathname !== '/admin/login') {
-            navigate('/admin/login');
-        }
         setIsCheckingAdmin(false);
     };
     checkAdminAuth();
-  }, [location.pathname, navigate]);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     apiService.clearToken();
@@ -140,7 +145,6 @@ function AppContent() {
   };
 
   const handleLoginSuccess = () => {
-    // The token is already set. We just need to refresh context data.
     refreshData();
   };
 
@@ -152,66 +156,59 @@ function AppContent() {
     );
   }
 
-  // Admin routes
-  if (location.pathname.startsWith('/admin')) {
-      if (!isAdmin) {
-          return <AdminLogin onLogin={handleAdminLogin} />;
-      }
-      return (
-          <AdminLayout onLogout={handleAdminLogout}>
-              <Routes>
-                  <Route path="/dashboard" element={<AdminDashboard />} />
-                  <Route path="/tests" element={<TestManagement />} />
-                  <Route path="/tests/edit/:testId" element={<TestEditor />} />
-                  <Route path="/tests/new" element={<TestEditor />} />
-                  <Route path="/users" element={<UserManagement />} />
-                  <Route path="/users/:userId" element={<UserResults />} />
-                  <Route path="*" element={<Navigate to="/admin/dashboard" />} />
-              </Routes>
-          </AdminLayout>
-      );
-  }
-  
-  // Printable result route (no layout)
-  if (location.pathname.startsWith('/results/print')) {
-      return (
-          <Routes>
-              <Route path="/" element={<PrintableResult />} />
-          </Routes>
-      )
-  }
-
-  // User Routes
   return (
-      <>
-        {user ? (
-          // Authenticated user layout
-          <AppLayout onLogout={handleLogout}>
-            <div className="main-content-wrapper w-full">
-              <Routes>
-                <Route path="/select" element={<Dashboard onTestSelect={setSelectedTest} onViewResult={handleViewResult} />} />
-                <Route path="/orientation" element={<Orientation onTestSelect={setSelectedTest} />} />
-                <Route path="/test" element={selectedTest ? <TestRunner test={selectedTest} onTestComplete={setTestResult} /> : <Navigate to="/select" />} />
-                <Route path="/results" element={testResult ? <Results result={testResult} /> : <Navigate to="/select" />} />
-                <Route path="/history" element={<History onViewResult={handleViewResult} />} />
-                <Route path="/chat" element={<Chat />} />
-                {/* If an authenticated user lands on the root, redirect them. */}
-                <Route path="/" element={<Navigate to="/select" replace />} /> 
+      <Routes>
+          {/* Public Routes */}
+          <Route path="/admin/login" element={<AdminLogin onLogin={handleAdminLogin} />} />
+          <Route path="/results/print" element={<PrintableResult />} />
+          
+          {/* Admin Protected Routes */}
+          <Route 
+            path="/admin/*" 
+            element={
+              <AdminProtectedRoute isAdmin={isAdmin}>
+                <Routes>
+                   <Route element={<AdminLayout onLogout={handleAdminLogout} />}>
+                      <Route path="dashboard" element={<AdminDashboard />} />
+                      <Route path="tests" element={<TestManagement />} />
+                      <Route path="tests/edit/:testId" element={<TestEditor />} />
+                      <Route path="tests/new" element={<TestEditor />} />
+                      <Route path="users" element={<UserManagement />} />
+                      <Route path="users/:userId" element={<UserResults />} />
+                      <Route index element={<Navigate to="dashboard" replace />} />
+                      <Route path="*" element={<Navigate to="dashboard" />} />
+                   </Route>
+                </Routes>
+              </AdminProtectedRoute>
+            }
+          />
+
+          {/* User Routes */}
+          {user ? (
+             <Route path="/*" element={<AppLayout onLogout={handleLogout} />}>
+                <Route path="select" element={<Dashboard onTestSelect={setSelectedTest} onViewResult={handleViewResult} />} />
+                <Route path="orientation" element={<Orientation onTestSelect={setSelectedTest} />} />
+                <Route path="test" element={selectedTest ? <TestRunner test={selectedTest} onTestComplete={setTestResult} /> : <Navigate to="/select" />} />
+                <Route path="results" element={testResult ? <Results result={testResult} /> : <Navigate to="/select" />} />
+                <Route path="history" element={<History onViewResult={handleViewResult} />} />
+                <Route path="chat" element={<Chat />} />
+                <Route index element={<Navigate to="/select" replace />} />
                 <Route path="*" element={<Navigate to="/select" />} />
-              </Routes>
-            </div>
-          </AppLayout>
-        ) : (
-          // Unauthenticated user layout
-          <div className="w-full flex items-center justify-center p-4 selection:bg-[#AFD244] selection:text-gray-800">
-            <Routes>
-              <Route path="/" element={<Welcome onLoginSuccess={handleLoginSuccess} />} />
-              <Route path="/admin/login" element={<AdminLogin onLogin={handleAdminLogin} />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </div>
-        )}
-      </>
+             </Route>
+          ) : (
+            <Route
+              path="*"
+              element={
+                <div className="w-full flex items-center justify-center p-4 selection:bg-[#AFD244] selection:text-gray-800">
+                    <Routes>
+                         <Route path="/" element={<Welcome onLoginSuccess={handleLoginSuccess} />} />
+                         <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                </div>
+              }
+            />
+          )}
+      </Routes>
   );
 }
 
