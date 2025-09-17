@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TestResult, TestId, User } from '../types';
-import { BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 // --- Chart Components (copied from Results.tsx for standalone printing) ---
 
@@ -23,7 +23,11 @@ const DefaultChart: React.FC<{ data: any[] }> = ({ data }) => (
             <XAxis type="number" domain={[0, 100]} hide />
             <YAxis type="category" dataKey="name" width={120} tickLine={false} axisLine={false} stroke="#333" />
             <Tooltip cursor={{fill: '#f5f5f5'}} />
-            <Bar dataKey="score" barSize={30} radius={[0, 8, 8, 0]} fill="#2EA446" />
+             <Bar dataKey="score" barSize={30} radius={[0, 8, 8, 0]}>
+                 {data.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+            </Bar>
         </BarChart>
     </ResponsiveContainer>
 );
@@ -52,13 +56,14 @@ function PrintableResult(): React.ReactNode {
     const chartData = result.scores.map(s => ({ name: s.name, score: Math.round(s.score), color: s.color }));
 
     return (
-        <div className="p-8 md:p-12 font-sans text-gray-800">
+        <div className="p-8 md:p-12 font-sans text-gray-800 bg-white">
             <style>
                 {`
                 @media print {
                     body {
                         -webkit-print-color-adjust: exact;
                         print-color-adjust: exact;
+                        background-color: #fff;
                     }
                     .no-print {
                         display: none;
@@ -87,7 +92,7 @@ function PrintableResult(): React.ReactNode {
                 <div>
                     <h2 className="text-2xl font-semibold mb-4 text-gray-800">Yapay Zeka Destekli Yorumlama</h2>
                     <div className="bg-gray-50 p-6 rounded-lg text-gray-700 whitespace-pre-wrap leading-relaxed border">
-                        {result.interpretation}
+                        <div dangerouslySetInnerHTML={{__html: result.interpretation.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br />')}}></div>
                     </div>
                 </div>
             </div>

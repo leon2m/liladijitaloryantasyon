@@ -124,14 +124,14 @@ const DevelopmentSuggestions: React.FC<{ testId: TestId; traitName: string }> = 
 function Results({ result }: ResultsProps): React.ReactNode {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<ActiveTab>('overview');
-  const { tests } = useData();
+  const { tests, user } = useData();
   
   const currentTest = tests.find(t => t.id === result.testId);
   const chartData = result.scores.map(s => ({ name: s.name, score: Math.round(s.score), color: s.color }));
   const dominantTrait = result.scores[0];
 
   const handlePrint = () => {
-      navigate('/results/print', { state: { result } });
+      navigate('/results/print', { state: { result, user } });
   };
 
   const renderContent = () => {

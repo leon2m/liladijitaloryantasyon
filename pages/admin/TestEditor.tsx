@@ -144,7 +144,7 @@ function TestEditor(): React.ReactNode {
         e.preventDefault();
         setIsSaving(true);
         try {
-            if (testId) {
+            if ('id' in test && test.id) {
                 await apiService.updateTest(test as Test);
             } else {
                 await apiService.createTest(test);
@@ -162,7 +162,7 @@ function TestEditor(): React.ReactNode {
 
     return (
         <form onSubmit={handleSubmit} className="fade-in space-y-10">
-            <h1 className="text-4xl font-bold text-gray-800">{testId ? 'Testi Düzenle' : 'Yeni Test Oluştur'}</h1>
+            <h1 className="text-4xl font-bold text-gray-800">{ 'id' in test && test.id ? 'Testi Düzenle' : 'Yeni Test Oluştur'}</h1>
 
             {/* Basic Info Section */}
             <div className="glass-card p-6">

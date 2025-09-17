@@ -22,17 +22,30 @@ import UserManagement from './pages/admin/UserManagement';
 import UserResults from './pages/admin/UserResults';
 import PrintableResult from './pages/PrintableResult';
 
-const MobileNavToggle: React.FC<{ onToggle: () => void }> = ({ onToggle }) => (
-    <button
-        onClick={onToggle}
-        className="md:hidden fixed top-4 left-4 z-[250] p-2 rounded-md bg-white/50 backdrop-blur-sm text-gray-800"
-        aria-label="Menüyü aç"
-    >
-        {/* Fix: Removed duplicate SVG attributes. */}
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-    </button>
+const getPageTitle = (pathname: string): string => {
+    if (pathname.startsWith('/select')) return 'Keşif Paneli';
+    if (pathname.startsWith('/orientation')) return 'Oryantasyon';
+    if (pathname.startsWith('/test')) return 'Değerlendirme';
+    if (pathname.startsWith('/results')) return 'Sonuç Raporu';
+    if (pathname.startsWith('/history')) return 'Sonuç Arşivim';
+    if (pathname.startsWith('/chat')) return 'Lila Rehber';
+    return 'Lila';
+};
+
+const MobileHeader: React.FC<{ onToggle: () => void; title: string }> = ({ onToggle, title }) => (
+    <header className="md:hidden fixed top-0 left-0 right-0 z-[150] h-16 px-4 flex items-center justify-between glass-card !rounded-none border-b !bg-white/80">
+         <button
+            onClick={onToggle}
+            className="p-2 -ml-2 text-gray-800"
+            aria-label="Menüyü aç"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+        <h1 className="text-lg font-bold text-gray-800 absolute left-1/2 -translate-x-1/2">{title}</h1>
+        <div className="w-6">{/* Spacer */}</div>
+    </header>
 );
 
 
@@ -46,9 +59,12 @@ const AppLayout: React.FC<{ onLogout: () => void; children: React.ReactNode }> =
     // Close sidebar on navigation
     setIsSidebarOpen(false);
   }, [location.pathname]);
+  
+  const pageTitle = getPageTitle(location.pathname);
 
   return (
     <>
+      <MobileHeader onToggle={() => setIsSidebarOpen(true)} title={pageTitle} />
       <div className="w-full flex">
           <Sidebar 
             user={user} 
@@ -60,7 +76,6 @@ const AppLayout: React.FC<{ onLogout: () => void; children: React.ReactNode }> =
             {children}
           </main>
       </div>
-      <MobileNavToggle onToggle={() => setIsSidebarOpen(true)} />
       {isSidebarOpen && (
          <div 
             className="mobile-overlay md:hidden" 

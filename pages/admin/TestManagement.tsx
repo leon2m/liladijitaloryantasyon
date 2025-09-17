@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Test } from '../../types';
+import { Test, TestId } from '../../types';
 import { apiService } from '../../services/apiService';
 
 function TestManagement(): React.ReactNode {
@@ -24,10 +24,10 @@ function TestManagement(): React.ReactNode {
         fetchTests();
     }, []);
 
-    const handleDelete = async (testId: string) => {
+    const handleDelete = async (testId: TestId) => {
         if(window.confirm("Bu testi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.")){
             try {
-                await apiService.deleteTest(testId as any);
+                await apiService.deleteTest(testId);
                 fetchTests(); // Refresh the list
             } catch (error) {
                 console.error("Failed to delete test", error);

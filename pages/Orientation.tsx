@@ -148,9 +148,9 @@ function Orientation({ onTestSelect }: OrientationProps): React.ReactNode {
                     </div>
                 </div>
             </div>
-            {/* Right Panel: Content (will be sticky) */}
+            {/* Right Panel: Content (will be sticky on medium screens and up) */}
             <div className="w-full md:w-3/5">
-                <div className="sticky top-8">
+                <div className="md:sticky top-8">
                     {activeStep ? (
                          <StepContent 
                             step={activeStep}

@@ -281,10 +281,20 @@ const getDevelopmentSuggestions = async (testId: TestId, traitName: string): Pro
 };
 
 // --- ADMİN PANELİ MOCK API ---
-// Bu fonksiyonlar, admin panelinin çökmesini önlemek için boş/varsayılan veri döndürür.
+
+const getAllUserData = (): any[] => {
+    const users = [];
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(USER_DATA_KEY_PREFIX)) {
+            const userData = JSON.parse(localStorage.getItem(key) as string);
+            users.push(userData);
+        }
+    }
+    return users;
+}
 
 const adminLogin = async (username: string, password: string): Promise<boolean> => {
-    // Gerçek bir uygulamada bunu asla yapmayın. Bu sadece demo amaçlıdır.
     if (username === 'admin' && password === 'password') {
         localStorage.setItem(ADMIN_TOKEN_KEY, 'mock-admin-jwt');
         return true;
@@ -301,33 +311,72 @@ const adminLogout = () => {
 };
 
 const getDashboardStats = async () => {
-    // Bunu tüm localStorage'ı taramadan taklit etmek zordur, bu kötü bir pratiktir.
-    // Sıfır durum verisi döndür.
-    return { totalUsers: 0, totalTests: 0, distribution: [] };
+    const allUsersData = getAllUserData();
+    const tests = await getTests();
+    const distributionMap = new Map<string, number>();
+
+    tests.forEach(test => distributionMap.set(test.name, 0));
+
+    const totalTests = allUsersData.reduce((acc, userData) => {
+        if (userData.results) {
+            userData.results.forEach((result: TestResult) => {
+                const currentCount = distributionMap.get(result.testName) || 0;
+                distributionMap.set(result.testName, currentCount + 1);
+            });
+            return acc + userData.results.length;
+        }
+        return acc;
+    }, 0);
+
+    const distribution = Array.from(distributionMap.entries()).map(([name, value]) => ({ name, value }));
+    
+    return {
+        totalUsers: allUsersData.length,
+        totalTests: totalTests,
+        distribution: distribution
+    };
 };
 
 const getAllUsersWithResults = async (): Promise<(User & { resultCount: number })[]> => {
-    // Düzgün bir backend olmadan bunu doğru şekilde taklit etmek mümkün değildir. Boş döndür.
-    return [];
+    const allUsersData = getAllUserData();
+    return allUsersData.map(userData => ({
+        ...userData.user,
+        resultCount: userData.results?.length || 0,
+    }));
 };
 
 const getUserWithResults = async (userId: string): Promise<{ user: User, results: TestResult[] }> => {
-    // Düzgün bir backend olmadan bunu taklit etmek mümkün değildir.
-    throw new ApiError("Kullanıcı detayları mock modunda görüntülenemez.");
+    const userDataString = localStorage.getItem(`${USER_DATA_KEY_PREFIX}${userId}`);
+    if (!userDataString) {
+        throw new ApiError("Kullanıcı bulunamadı.");
+    }
+    const userData = JSON.parse(userDataString);
+    return { user: userData.user, results: userData.results || [] };
 };
 
-// Test yönetimi, değişiklikleri kalıcı hale getirmek için bir backend gerektirir. Bunlar sahte uygulamalardır.
 const updateTest = async (updatedTest: Test): Promise<Test> => {
-    console.warn("Mock API: Test güncellemesi kalıcı hale getirilmedi.");
+    if (!testsCache) await getTests();
+    if (testsCache) {
+        const index = testsCache.findIndex(t => t.id === updatedTest.id);
+        if (index !== -1) {
+            testsCache[index] = updatedTest;
+        }
+    }
     return updatedTest;
 };
 const createTest = async (newTest: Omit<Test, 'id'>): Promise<Test> => {
-    console.warn("Mock API: Test oluşturma işlemi kalıcı hale getirilmedi.");
-    const createdTest = { ...newTest, id: `new_${Date.now()}` as TestId };
+    if (!testsCache) await getTests();
+    const createdTest = { ...newTest, id: `custom_${Date.now()}` as TestId };
+    if (testsCache) {
+        testsCache.push(createdTest);
+    }
     return createdTest;
 };
 const deleteTest = async (testId: TestId): Promise<void> => {
-    console.warn("Mock API: Test silme işlemi kalıcı hale getirilmedi.");
+     if (!testsCache) await getTests();
+    if (testsCache) {
+        testsCache = testsCache.filter(t => t.id !== testId);
+    }
     return;
 };
 

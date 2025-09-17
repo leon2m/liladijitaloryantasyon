@@ -27,13 +27,17 @@ function UserManagement(): React.ReactNode {
     
     const exportToCSV = async () => {
         let allResults: { user: User, result: TestResult }[] = [];
-        // This is inefficient but necessary with the current localStorage mock DB
+        
         const allUsers = await apiService.getAllUsersWithResults();
         for (const user of allUsers) {
-            const data = await apiService.getUserWithResults(user.user_id);
-            data.results.forEach(result => {
-                allResults.push({ user: data.user, result });
-            });
+            try {
+                const data = await apiService.getUserWithResults(user.user_id);
+                 data.results.forEach(result => {
+                    allResults.push({ user: data.user, result });
+                });
+            } catch(e) {
+                console.error(`Could not fetch results for user ${user.user_id}`, e);
+            }
         }
         
         let csvContent = "data:text/csv;charset=utf-8,Kullanıcı Adı,Kullanıcı Soyadı,Test Adı,Tamamlanma Tarihi,Baskın Profil,Baskın Skor\n";
@@ -45,7 +49,7 @@ function UserManagement(): React.ReactNode {
             const row = [
                 user.first_name,
                 user.last_name,
-                res.testName,
+                `"${res.testName.replace(/"/g, '""')}"`, // Handle commas in test name
                 new Date(res.submitted_at).toLocaleDateString('tr-TR'),
                 dominantScore.name,
                 dominantScore.score.toFixed(2)
